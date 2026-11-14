@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"time"
 )
 
 const (
@@ -25,6 +26,7 @@ type Post struct {
 	TargetChannels []string
 	CreatedBy      string
 	Status         string
+	PublishAt      *time.Time
 }
 
 // Hàm check user có phải là mentor hay không bằng zaloUID
@@ -50,7 +52,7 @@ func CanApprove(user User) bool {
 }
 
 // Tạo bài viết mới
-func CreatePost(author User, title string, content string, targetChannels []string) Post {
+func CreatePost(author User, title string, content string, targetChannels []string, publishAt *time.Time) Post {
 	return Post{
 		ID:             "post_01",
 		Title:          title,
@@ -58,6 +60,7 @@ func CreatePost(author User, title string, content string, targetChannels []stri
 		TargetChannels: targetChannels,
 		CreatedBy:      author.ZaloUID,
 		Status:         StatusPending,
+		PublishAt:      publishAt,
 	}
 }
 
@@ -71,6 +74,7 @@ func ApprovePost(mentor User, post *Post) error {
 	}
 }
 
+// mentor không duyệt bài
 func RejectPost(mentor User, post *Post) error {
 	if CanApprove(mentor) == true {
 		post.Status = StatusRejected
@@ -78,4 +82,17 @@ func RejectPost(mentor User, post *Post) error {
 	} else {
 		return errors.New("User không có quyền từ chối bài đăng ")
 	}
+}
+
+// Kiểm tra bài viết đã đủ điều kiện để phát sóng hay chưa
+func IsReadyToPublish(post Post) bool {
+	if post.Status != StatusApproved {
+		return false
+	}
+
+	if post.PublishAt == nil || time.Now().After(*post.PublishAt) || time.Now().Equal(*post.PublishAt) {
+		return true
+	}
+
+	return false
 }
