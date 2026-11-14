@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ BCN NOTIFICATION HUB SERVICE
+#  BCN NOTIFICATION HUB SERVICE
 
 ### *Enterprise-Grade Multi-Channel Notification Engine with Role-Based Access Control*
 
@@ -15,7 +15,7 @@
 
 </div>
 
-## 📌 Tổng Quan Hệ Thống
+##  Tổng Quan Hệ Thống
 
 **BCN Notification Service** được xây dựng nhằm giải quyết bài toán phát tán thông báo tự động, đồng bộ và có kiểm duyệt cho Ban Chủ Nhiệm (BCN):
 * **Bảo mật tuyệt đối (Zero-Password):** Nhận diện trực tiếp qua `ZaloUID` và đối soát tức thì với danh sách Mentor Whitelist cấu hình độc lập.
@@ -24,6 +24,6 @@
 
 ---
 
-## 🏛 Kiến Trúc Tổng Thể
+## Kiến Trúc Tổng Thể
 
 Hệ thống áp dụng mô hình **Clean Architecture / Interface Provider Pattern**:
