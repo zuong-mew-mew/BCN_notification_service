@@ -29,29 +29,25 @@ type Post struct {
 	PublishAt      *time.Time
 }
 
-// Hàm check user có phải là mentor hay không bằng zaloUID
-func IdentifyUser(zaloUID string, fUllName string, mentorUIDlist []string) User {
+func IdentifyUser(zaloUID string, fullName string, mentorUIDList []string) User {
 	role := RoleUser
-
-	for _, mentorUID := range mentorUIDlist {
-		if zaloUID == mentorUID {
+	for _, mUID := range mentorUIDList {
+		if zaloUID == mUID {
 			role = RoleMentor
 			break
 		}
 	}
 	return User{
 		ZaloUID:  zaloUID,
-		FullName: fUllName,
+		FullName: fullName,
 		Role:     role,
 	}
 }
 
-// Hàm kiểm tra User có quyền duyệt bài hay không
 func CanApprove(user User) bool {
 	return user.Role == RoleMentor
 }
 
-// Tạo bài viết mới
 func CreatePost(author User, title string, content string, targetChannels []string, publishAt *time.Time) Post {
 	return Post{
 		ID:             "post_01",
@@ -64,35 +60,28 @@ func CreatePost(author User, title string, content string, targetChannels []stri
 	}
 }
 
-// Mentor duyệt bài
 func ApprovePost(mentor User, post *Post) error {
-	if CanApprove(mentor) == true {
-		post.Status = StatusApproved
-		return nil
-	} else {
-		return errors.New("bạn không có quyền duyệt bài")
+	if !CanApprove(mentor) {
+		return errors.New("unauthorized: approval requires mentor role")
 	}
+	post.Status = StatusApproved
+	return nil
 }
 
-// mentor không duyệt bài
 func RejectPost(mentor User, post *Post) error {
-	if CanApprove(mentor) == true {
-		post.Status = StatusRejected
-		return nil
-	} else {
-		return errors.New("User không có quyền từ chối bài đăng ")
+	if !CanApprove(mentor) {
+		return errors.New("unauthorized: rejection requires mentor role")
 	}
+	post.Status = StatusRejected
+	return nil
 }
 
-// Kiểm tra bài viết đã đủ điều kiện để phát sóng hay chưa
 func IsReadyToPublish(post Post) bool {
 	if post.Status != StatusApproved {
 		return false
 	}
-
-	if post.PublishAt == nil || time.Now().After(*post.PublishAt) || time.Now().Equal(*post.PublishAt) {
+	if post.PublishAt == nil || !time.Now().Before(*post.PublishAt) {
 		return true
 	}
-
 	return false
 }

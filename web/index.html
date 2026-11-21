@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Thông Báo Ban Công Nghệ (BCN)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              purple: '#7c3aed',
+              indigo: '#4f46e5',
+              blue: '#2563eb'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(160, 160, 160, 0.25);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(160, 160, 160, 0.45);
+    }
+    .glow-pill {
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #d97706 100%);
+      box-shadow: 0 4px 20px -2px rgba(245, 158, 11, 0.5), 0 0 25px rgba(234, 88, 12, 0.35);
+    }
+    input[type="datetime-local"] {
+      color-scheme: light;
+      cursor: pointer;
+    }
+    .dark input[type="datetime-local"] {
+      color-scheme: dark;
+      cursor: pointer;
+    }
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      opacity: 1;
+      padding: 4px;
+      border-radius: 6px;
+    }
+    .dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#f7f6f3] text-stone-900 dark:bg-[#070709] dark:text-zinc-100 py-4 sm:py-6 px-3 sm:px-6">
+
+  <!-- ============================================================== -->
+  <!-- MÀN HÌNH 1: CỔNG ĐĂNG NHẬP / CHỌN VAI TRÒ NHANH                 -->
+  <!-- ============================================================== -->
+  <div id="loginScreen" class="max-w-md mx-auto my-8 space-y-6">
+    
+    <div class="flex justify-end">
+      <button onclick="toggleTheme()" class="p-2 rounded-full bg-white dark:bg-[#141419] border border-stone-200 dark:border-white/10 text-stone-600 dark:text-zinc-300 hover:scale-105 transition shadow-sm cursor-pointer" title="Chuyển đổi Dark/Light mode">
+        <i data-lucide="moon" id="loginThemeIcon" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <div class="bg-white dark:bg-[#111116] p-7 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] space-y-5 text-center">
+      
+      <!-- LOGO CHÍNH THỨC BAN CÔNG NGHỆ -->
+      <div class="flex justify-center">
+        <img src="/bcn_logo.png" alt="Ban Công Nghệ - School Life Stories" class="w-52 h-auto rounded-2xl shadow-md border border-stone-900 dark:border-white/15 bg-black">
+      </div>
+
+      <div class="space-y-1">
+        <h1 class="text-base font-bold text-stone-900 dark:text-white tracking-tight">Cổng Thông Báo Ban Công Nghệ</h1>
+        <p class="text-xs text-stone-500 dark:text-zinc-400">Hệ thống điều phối tin tức Zalo nội bộ &bull; Nhóm ID: 4025169182418597977</p>
+      </div>
+
+      <!-- 2 NÚT VÀO NHANH THEO 2 VAI TRÒ -->
+      <div class="space-y-2.5 pt-1 text-left">
+        <div class="flex items-center justify-between pb-1">
+          <span class="text-[11px] font-bold text-stone-400 dark:text-zinc-500 uppercase tracking-wider">Chọn Vai Trò Để Vào Nhanh</span>
+          <span class="text-[10px] text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded font-medium border border-amber-200 dark:border-amber-800/60">Bypass OAuth</span>
+        </div>
+
+        <!-- 1. VAI TRÒ MENTOR (KEY BẠC / PHÊ DUYỆT) -->
+        <button onclick="fastLogin('mentor')" class="w-full p-4 rounded-2xl border-2 border-amber-500 dark:border-amber-500/80 bg-amber-50/70 dark:bg-amber-950/20 hover:bg-amber-100/80 dark:hover:bg-amber-950/40 transition flex items-start gap-3.5 text-left group cursor-pointer shadow-xs">
+          <div class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <div class="space-y-0.5 flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-stone-900 dark:text-white group-hover:text-amber-900 dark:group-hover:text-amber-300">Vào Với Vai Trò: Mentor (Key Bạc)</span>
+              <span class="text-[10px] font-bold text-amber-900 dark:text-amber-300 bg-amber-200/80 dark:bg-amber-900/60 px-1.5 py-0.2 rounded font-mono flex items-center gap-1">
+                <i data-lucide="key" class="w-3 h-3"></i> MENTOR
+              </span>
+            </div>
+            <p class="text-[11px] text-stone-600 dark:text-zinc-400 leading-normal">
+              Xem toàn bộ bài chờ duyệt từ mọi thành viên, ra quyết định <b>Phê duyệt & Bắn Bot Zalo (@all)</b> hoặc <b>Từ chối</b>, hoàn tác nếu duyệt nhầm.
+            </p>
+          </div>
+        </button>
+
+        <!-- 2. VAI TRÒ NGƯỜI THƯỜNG (THÀNH VIÊN BCN) -->
+        <button onclick="fastLogin('user')" class="w-full p-4 rounded-2xl border border-stone-300 dark:border-white/10 bg-stone-50 dark:bg-[#16161d] hover:bg-stone-100 dark:hover:bg-[#1e1e26] transition flex items-start gap-3.5 text-left group cursor-pointer shadow-xs">
+          <div class="w-9 h-9 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-black flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+            <i data-lucide="user" class="w-5 h-5"></i>
+          </div>
+          <div class="space-y-0.5 flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-stone-900 dark:text-white group-hover:text-stone-950">Vào Với Vai Trò: Người Thường (Thành Viên)</span>
+              <span class="text-[10px] font-bold text-stone-700 dark:text-zinc-300 bg-stone-200 dark:bg-zinc-800 px-1.5 py-0.2 rounded font-mono">ROLE: USER</span>
+            </div>
+            <p class="text-[11px] text-stone-600 dark:text-zinc-400 leading-normal">
+              Soạn bài thông báo mới gửi lên hàng đợi kèm hẹn giờ phát sóng. <b>Chỉ thấy bài của chính mình</b>, có quyền rút lại bài nộp trước khi duyệt.
+            </p>
+          </div>
+        </button>
+      </div>
+
+      <div class="relative py-1">
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-stone-200 dark:border-white/10"></div></div>
+        <div class="relative flex justify-center text-[11px] uppercase tracking-wider text-stone-400 dark:text-zinc-500 bg-white dark:bg-[#111116] px-2">Hoặc liên kết tài khoản thật</div>
+      </div>
+
+      <!-- Nút Đăng nhập Zalo Thật -->
+      <a href="/auth/zalo/login" class="w-full py-3 px-4 bg-[#0068ff] hover:bg-[#0057d6] text-white text-xs font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-xs cursor-pointer no-underline">
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12c0 1.93.55 3.73 1.5 5.25L2 22l4.88-1.46c1.51.93 3.28 1.46 5.12 1.46 5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+        </svg>
+        Đăng Nhập Zalo OAuth Thật (Lấy UID Thật)
+      </a>
+
+    </div>
+
+    <div class="bg-white dark:bg-[#111116] p-5 rounded-2xl border border-stone-200/80 dark:border-white/10 shadow-xs space-y-2 text-xs leading-relaxed text-stone-600 dark:text-zinc-400">
+      <div class="flex items-center gap-2 font-bold text-stone-800 dark:text-zinc-200">
+        <i data-lucide="shield" class="w-3.5 h-3.5 text-amber-600"></i>
+        <span>Phân quyền Ban Công Nghệ:</span>
+      </div>
+      <p class="text-stone-500 dark:text-zinc-400 text-[11px]">
+        Thành viên thường chỉ có quyền xem bài của chính mình và rút bài. Quyền duyệt phát sóng qua Bot Zalo, từ chối và hoàn tác lệnh thuộc về Mentor.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- ============================================================== -->
+  <!-- MÀN HÌNH 2: BẢNG ĐIỀU KHIỂN CHÍNH (STYLE MUACERT.COM DARK/LIGHT)-->
+  <!-- ============================================================== -->
+  <div id="mainDashboard" class="w-full max-w-[1400px] mx-auto space-y-6 hidden">
+
+    <!-- FLOATING PILL NAVBAR VỚI HIỆU ỨNG TRƯỢT MƯỢT MÀ -->
+    <header class="sticky top-3 z-40 w-full">
+      <div class="bg-white/95 dark:bg-[#0e0e13]/90 backdrop-blur-xl px-4 sm:px-6 py-2.5 rounded-full border border-stone-200/90 dark:border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_12px_40px_rgba(0,0,0,0.7)] flex items-center justify-between gap-3">
+        
+        <!-- TRÁI: User Info & Brand Mini -->
+        <div class="flex items-center gap-3">
+          <img src="/bcn_logo.png" alt="BCN" class="w-8 h-8 rounded-full object-cover bg-black border border-stone-800 shrink-0">
+          <div class="hidden sm:block leading-tight">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-stone-900 dark:text-white" id="navUserName">Hello, Trần Mentor</span>
+              <span id="navRoleBadge" class="text-[9px] font-bold px-1.5 py-0.2 rounded font-mono bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800 inline-flex items-center gap-1">
+                <i data-lucide="key" class="w-2.5 h-2.5"></i> KEY BẠC
+              </span>
+            </div>
+            <span class="text-[10px] text-stone-500 dark:text-zinc-400 font-mono" id="navUserUID">UID: 111111</span>
+          </div>
+        </div>
+
+        <!-- GIỮA: CÁC NÚT CHIA MỤC VỚI HIỆU ỨNG SLIDING PILL TRƯỢT MƯỢT MÀ (ẢNH 2) -->
+        <div class="relative flex items-center bg-stone-100/90 dark:bg-[#16161d] p-1 rounded-full border border-stone-200/70 dark:border-white/10 shrink-0" id="navTabsWrapper">
+          
+          <!-- THANH CHỈ BÁO TRƯỢT MƯỢT MÀ (SLIDING PILL INDICATOR) -->
+          <div id="navSlidingIndicator" class="absolute top-1 bottom-1 rounded-full glow-pill transition-all duration-300 ease-out pointer-events-none z-0"></div>
+
+          <!-- MỤC 1: SOẠN BÀI & LIVE PREVIEW -->
+          <button onclick="switchMainSection('compose', this)" id="navTabCompose" 
+            class="relative z-10 text-white px-3 sm:px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-colors duration-200 cursor-pointer">
+            <i data-lucide="pen-line" class="w-3.5 h-3.5"></i>
+            <span>Soạn & Xem Trước</span>
+          </button>
+
+          <!-- MỤC 2: TRUNG TÂM PHÊ DUYỆT -->
+          <button onclick="switchMainSection('queue', this)" id="navTabQueue" 
+            class="relative z-10 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white px-3 sm:px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-colors duration-200 cursor-pointer">
+            <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
+            <span id="navTabQueueTitle">Điều Phối Duyệt</span>
+            <span id="navTabPendingCount" class="text-[10px] font-mono bg-amber-500 text-white px-1.5 py-0.2 rounded-full font-bold ml-0.5">0</span>
+          </button>
+
+          <!-- MỤC 3: PHÒNG TEST GỬI TIN NHẮN BOT ZALO (LIVE SANDBOX) -->
+          <button onclick="switchMainSection('test', this)" id="navTabTest" 
+            class="relative z-10 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white px-3 sm:px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-colors duration-200 cursor-pointer">
+            <i data-lucide="radio" class="w-3.5 h-3.5 text-amber-500 animate-pulse"></i>
+            <span>Test Bot Zalo</span>
+            <span class="text-[9px] font-mono bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1 py-0.2 rounded font-bold">LIVE</span>
+          </button>
+
+        </div>
+
+        <!-- PHẢI: ĐỒNG HỒ + THEME TOGGLE + LOGOUT -->
+        <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          
+          <div class="hidden xl:flex items-center gap-1.5 text-xs font-mono text-stone-600 dark:text-zinc-400 bg-stone-100 dark:bg-[#16161d] px-2.5 py-1 rounded-full border border-stone-200 dark:border-white/10">
+            <i data-lucide="clock" class="w-3 h-3 text-stone-500 dark:text-zinc-500"></i>
+            <span id="liveHeaderClock">19:59:21</span>
+          </div>
+
+          <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-[#1a1a24] text-stone-600 dark:text-zinc-300 transition cursor-pointer border border-stone-200 dark:border-white/10" title="Chuyển chế độ Sáng / Tối">
+            <i data-lucide="sun" id="themeToggleIcon" class="w-4 h-4"></i>
+          </button>
+
+          <button onclick="handleLogout()" class="px-3.5 py-1.5 bg-stone-900 hover:bg-black dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black text-xs font-bold rounded-full transition shadow-xs cursor-pointer flex items-center gap-1.5">
+            <i data-lucide="log-out" class="w-3 h-3"></i>
+            <span class="hidden sm:inline">Logout</span>
+          </button>
+
+        </div>
+
+      </div>
+    </header>
+
+    <!-- KPI STATS BAR (THAY THẾ CHỮ NHÓM BCN BẰNG CHỈ SỐ HỮU ÍCH THỰC TẾ) -->
+    <div class="max-w-3xl mx-auto bg-white dark:bg-[#111116] p-5 sm:p-6 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] grid grid-cols-3 divide-x divide-stone-200 dark:divide-white/10 text-center">
+      
+      <!-- Chỉ số 1: Chờ Duyệt -->
+      <div class="px-2">
+        <div class="text-2xl sm:text-3xl font-extrabold text-amber-600 dark:text-amber-400 font-mono tracking-tight" id="statPendingCount">0</div>
+        <div class="text-xs font-bold text-stone-800 dark:text-zinc-200 mt-1">Chờ Phê Duyệt</div>
+        <div class="text-[11px] text-stone-400 dark:text-zinc-500">Hàng đợi xét duyệt</div>
+      </div>
+
+      <!-- Chỉ số 2: Đã Phát Sóng -->
+      <div class="px-2">
+        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono tracking-tight" id="statApprovedCount">0</div>
+        <div class="text-xs font-bold text-stone-800 dark:text-zinc-200 mt-1">Đã Phát Sóng (@all)</div>
+        <div class="text-[11px] text-stone-400 dark:text-zinc-500">Bot đã gửi vào nhóm</div>
+      </div>
+
+      <!-- Chỉ số 3: Đã Từ Chối (Thay thế hoàn toàn chữ nhóm BCN theo ảnh 4) -->
+      <div class="px-2">
+        <div class="text-2xl sm:text-3xl font-extrabold text-rose-600 dark:text-rose-400 font-mono tracking-tight" id="statRejectedCount">0</div>
+        <div class="text-xs font-bold text-stone-800 dark:text-zinc-200 mt-1">Đã Từ Chối</div>
+        <div class="text-[11px] text-stone-400 dark:text-zinc-500">Chưa đạt yêu cầu</div>
+      </div>
+
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- PHẦN 1: SOẠN BÀI (CÓ SET THỜI GIAN) & XEM TRƯỚC (NỀN TRẮNG ZALO)-->
+    <!-- ============================================================== -->
+    <div id="sectionCompose" class="space-y-6">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- KHỐI SOẠN BÀI (7/12) - BỔ SUNG CHỖ SET THỜI GIAN PHÁT SÓNG (ẢNH 3) -->
+        <div class="lg:col-span-7 bg-white dark:bg-[#111116] p-6 sm:p-7 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] space-y-5">
+          <div class="border-b border-stone-100 dark:border-white/10 pb-4 flex items-center justify-between">
+            <div>
+              <h2 class="text-sm font-bold text-stone-900 dark:text-white flex items-center gap-2">
+                <i data-lucide="edit-3" class="w-4 h-4 text-amber-500"></i>
+                Soạn bài thông báo mới
+              </h2>
+              <p class="text-xs text-stone-500 dark:text-zinc-400 mt-0.5">Nộp thông báo vào hàng đợi kèm thời gian phát sóng mong muốn.</p>
+            </div>
+            <span class="text-[10px] font-bold text-stone-600 dark:text-zinc-300 bg-stone-100 dark:bg-zinc-800 px-2.5 py-1 rounded-full font-mono border border-stone-200 dark:border-white/10">DRAFT</span>
+          </div>
+
+          <form onsubmit="handleCreatePost(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-stone-700 dark:text-zinc-300 mb-1.5">Tiêu đề bài viết</label>
+              <input type="text" id="postTitle" required placeholder="Ví dụ: Họp toàn Ban Công Nghệ rà soát tiến độ"
+                class="w-full text-xs px-4 py-3 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-[#1e1e28] focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition"
+                oninput="updateLivePreview()">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-stone-700 dark:text-zinc-300 mb-1.5">Nội dung chi tiết</label>
+              <textarea id="postContent" rows="4" required placeholder="Nhập nội dung cần truyền đạt đến các thành viên..."
+                class="w-full text-xs px-4 py-3 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white focus:outline-none focus:bg-white dark:focus:bg-[#1e1e28] focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition custom-scrollbar"
+                oninput="updateLivePreview()"></textarea>
+            </div>
+
+            <!-- CHỖ SET THỜI GIAN PHÁT SÓNG THÔNG BÁO (THEO YÊU CẦU ẢNH 3) -->
+            <div class="p-4 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 space-y-3">
+              <div class="flex items-center justify-between">
+                <label class="text-xs font-bold text-stone-800 dark:text-zinc-200 flex items-center gap-1.5">
+                  <i data-lucide="calendar-clock" class="w-4 h-4 text-indigo-500"></i>
+                  <span>Lên lịch phát sóng (Thời gian gửi)</span>
+                </label>
+                <span class="text-[10px] text-indigo-600 dark:text-indigo-400 font-mono bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800" id="scheduleStatusBadge">GỬI NGAY</span>
+              </div>
+
+              <!-- Ô NHẬP THỜI GIAN KÈM NÚT BẤM MỞ LỊCH TRỰC TIẾP -->
+              <div class="flex flex-col sm:flex-row gap-2.5 items-stretch">
+                <div class="relative flex-1 flex items-center">
+                  <input type="datetime-local" id="postScheduledAt" 
+                    class="w-full text-xs px-3.5 py-2.5 pr-10 rounded-xl bg-white dark:bg-[#20202a] border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white focus:outline-none focus:border-indigo-500 font-mono transition cursor-pointer"
+                    onclick="openDateTimePicker()"
+                    onchange="handleScheduleChange()"
+                    oninput="handleScheduleChange()">
+                  <button type="button" onclick="openDateTimePicker()" class="absolute right-2 p-1.5 rounded-lg text-stone-400 dark:text-zinc-400 hover:text-stone-700 dark:hover:text-white transition cursor-pointer" title="Bấm để mở lịch chọn ngày giờ">
+                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                  </button>
+                </div>
+
+                <button type="button" onclick="openDateTimePicker()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs shrink-0">
+                  <i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i>
+                  <span>Chọn Ngày Giờ</span>
+                </button>
+              </div>
+
+              <!-- CÁC NÚT CHỌN NHANH (PRESET BUTTONS CỰC TIỆN) -->
+              <div class="space-y-1.5">
+                <div class="text-[11px] font-semibold text-stone-500 dark:text-zinc-400 flex items-center justify-between">
+                  <span>Chọn mốc giờ nhanh:</span>
+                  <span id="scheduleTextDesc" class="text-indigo-600 dark:text-indigo-400 font-normal">Mặc định: Phát ngay khi Mentor duyệt</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  <button type="button" onclick="setQuickSchedule('now')" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-stone-200 dark:bg-zinc-800 hover:bg-stone-300 dark:hover:bg-zinc-700 text-stone-800 dark:text-zinc-200 transition cursor-pointer flex items-center gap-1">
+                    <i data-lucide="zap" class="w-3 h-3 text-amber-500"></i> Phát ngay
+                  </button>
+                  <button type="button" onclick="setQuickSchedule('15m')" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white dark:bg-[#20202a] hover:bg-stone-100 dark:hover:bg-zinc-700 text-stone-700 dark:text-zinc-300 border border-stone-200 dark:border-white/10 transition cursor-pointer">
+                    +15 phút
+                  </button>
+                  <button type="button" onclick="setQuickSchedule('1h')" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white dark:bg-[#20202a] hover:bg-stone-100 dark:hover:bg-zinc-700 text-stone-700 dark:text-zinc-300 border border-stone-200 dark:border-white/10 transition cursor-pointer">
+                    +1 giờ
+                  </button>
+                  <button type="button" onclick="setQuickSchedule('tonight')" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white dark:bg-[#20202a] hover:bg-stone-100 dark:hover:bg-zinc-700 text-stone-700 dark:text-zinc-300 border border-stone-200 dark:border-white/10 transition cursor-pointer">
+                    Tối nay 19:30
+                  </button>
+                  <button type="button" onclick="setQuickSchedule('tomorrow')" class="px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white dark:bg-[#20202a] hover:bg-stone-100 dark:hover:bg-zinc-700 text-stone-700 dark:text-zinc-300 border border-stone-200 dark:border-white/10 transition cursor-pointer">
+                    Sáng mai 08:30
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tùy chọn tag @all -->
+            <div class="p-3.5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 flex items-center justify-between">
+              <div class="space-y-0.5">
+                <span class="text-xs font-bold text-stone-800 dark:text-zinc-200 block">Réo chuông toàn nhóm (@all)</span>
+                <span class="text-[11px] text-stone-500 dark:text-zinc-400 block">Tự động gắn tag @All khi Bot Zalo gửi vào nhóm BCN</span>
+              </div>
+              <input type="checkbox" id="tagAllToggle" checked class="w-4 h-4 rounded text-amber-600 accent-amber-600 cursor-pointer" onchange="updateLivePreview()">
+            </div>
+
+            <button type="submit" class="w-full py-3 px-5 bg-stone-900 hover:bg-black dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black text-xs font-bold rounded-2xl transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+              Nộp Bài Lên Hàng Đợi (Chờ Phê Duyệt)
+            </button>
+          </form>
+        </div>
+
+        <!-- KHỐI XEM TRƯỚC (5/12) - TUYỆT ĐỐI GIỮ NGUYÊN NỀN TRẮNG ZALO THỰC TẾ (THEO YÊU CẦU ẢNH 1) -->
+        <div class="lg:col-span-5 bg-white dark:bg-[#111116] p-6 sm:p-7 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] space-y-4">
+          <div class="flex items-center justify-between border-b border-stone-100 dark:border-white/10 pb-4">
+            <div class="flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4 text-[#0068ff]"></i>
+              <h3 class="text-xs font-bold text-stone-900 dark:text-white uppercase tracking-wider">Xem trước nội dung thông báo</h3>
+            </div>
+            <span class="text-[10px] text-stone-400 dark:text-zinc-500 font-mono">Zalo Web Replica</span>
+          </div>
+
+          <!-- NỀN CHAT ZALO KHÔNG BAO GIỜ BỊ ĐỔI SANG MÀU ĐEN (BẤT BIẾN THEO CHUẨN ZALO SÁNG) -->
+          <div class="bg-[#f0f2f5] p-4 sm:p-5 rounded-2xl border border-stone-200/90 shadow-inner">
+            <div class="flex items-start gap-3">
+              <!-- Avatar tròn BCN -->
+              <img src="/bcn_logo.png" alt="BCN Noti Bot" class="w-10 h-10 rounded-full object-cover bg-black border border-stone-800 shrink-0 shadow-xs">
+              
+              <!-- Bong bóng tin nhắn TRẮNG BẤT BIẾN của Zalo (KHÔNG ĐƯỢC CHUYỂN MÀU ĐEN) -->
+              <div class="relative bg-white text-stone-900 rounded-2xl rounded-tl-xs p-3.5 border border-stone-200/80 shadow-xs max-w-full flex-1">
+                
+                <!-- Tên người gửi: BCN Noti Bot -->
+                <div class="text-[13px] font-medium text-stone-600 leading-tight mb-1.5 select-none" id="previewSenderName">
+                  BCN Noti Bot
+                </div>
+
+                <!-- Thân tin nhắn với tag @All màu xanh Zalo #0068ff -->
+                <div class="text-sm text-stone-900 leading-relaxed break-words font-sans">
+                  <span id="previewTagAllSpan" class="text-[#0068ff] font-bold mr-1.5 select-none">@All</span>
+                  <span id="previewPostTitle" class="font-bold text-stone-900">Họp toàn Ban Công Nghệ rà soát tiến độ</span>
+                  <div id="previewPostContent" class="text-stone-800 mt-1 whitespace-pre-line text-[13px]">
+                    Tối nay 19:30 họp Ban Công Nghệ để rà soát tiến độ dự án tuần mới. Đề nghị mọi người có mặt đầy đủ.
+                  </div>
+                </div>
+
+                <!-- Thời gian trong tin nhắn Zalo kèm badge hẹn giờ nếu có -->
+                <div class="text-[11px] text-stone-400 mt-2 font-sans select-none flex items-center justify-between">
+                  <span id="previewMessageTime">20:17</span>
+                  <span id="previewScheduleBadge" class="hidden text-[10px] font-mono text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.2 rounded">Hẹn giờ</span>
+                </div>
+
+                <!-- Icon Reaction Thumbs Up nổi ở góc dưới bên phải -->
+                <div class="absolute -bottom-2.5 -right-2 bg-white rounded-full p-1 border border-stone-200 shadow-sm flex items-center justify-center w-6 h-6 select-none cursor-pointer hover:scale-110 transition">
+                  <i data-lucide="thumbs-up" class="w-3.5 h-3.5 text-stone-400"></i>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-stone-400 dark:text-zinc-500 text-center flex items-center justify-center gap-1.5 pt-1">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i>
+            <span>Nền bong bóng chat luôn giữ màu trắng Zalo chuẩn để mô phỏng chính xác giao diện người nhận.</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- PHẦN 2: TRUNG TÂM ĐIỀU PHỐI PHÊ DUYỆT (MỤC RIÊNG BIỆT)         -->
+    <!-- ============================================================== -->
+    <div id="sectionQueue" class="space-y-6 hidden">
+      
+      <div class="bg-white dark:bg-[#111116] p-6 sm:p-7 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] space-y-5">
+        
+        <!-- Header & Sub-tabs -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-stone-100 dark:border-white/10 gap-3">
+          <div>
+            <h2 class="text-sm font-bold text-stone-900 dark:text-white flex items-center gap-2" id="queueSectionTitle">
+              <i data-lucide="check-circle" class="w-4 h-4 text-amber-500"></i>
+              Trung tâm điều phối phê duyệt thông báo
+            </h2>
+            <p class="text-xs text-stone-500 dark:text-zinc-400 mt-0.5" id="queueSectionSubtitle">Quyền quyết định phát sóng thông báo vào nhóm Zalo BCN</p>
+          </div>
+
+          <!-- SUB-TABS DÀNH CHO MENTOR -->
+          <div id="mentorTabsContainer" class="flex items-center bg-stone-100 dark:bg-[#181820] p-1 rounded-full border border-stone-200/80 dark:border-white/10 text-xs self-start sm:self-auto">
+            <button onclick="switchMentorTab('pending')" id="tabPendingBtn" 
+              class="px-4 py-1.5 rounded-full font-bold text-stone-900 dark:text-white bg-white dark:bg-[#252532] shadow-xs transition-all duration-200 cursor-pointer flex items-center gap-1.5">
+              <i data-lucide="clock-3" class="w-3.5 h-3.5 text-amber-500"></i>
+              <span>Chờ Duyệt</span>
+              <span id="tabPendingBadge" class="text-[10px] font-mono bg-amber-500/20 text-amber-700 dark:text-amber-300 px-1.5 py-0.2 rounded-full font-bold ml-0.5">0</span>
+            </button>
+            
+            <button onclick="switchMentorTab('history')" id="tabHistoryBtn" 
+              class="px-4 py-1.5 rounded-full font-medium text-stone-500 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white transition-all duration-200 cursor-pointer flex items-center gap-1.5">
+              <i data-lucide="history" class="w-3.5 h-3.5"></i>
+              <span>Lịch Sử Duyệt</span>
+            </button>
+          </div>
+
+          <!-- BADGE CHO USER BÌNH THƯỜNG -->
+          <div id="userBadgeWrapper" class="hidden">
+            <span id="userPostCountBadge" class="text-xs font-semibold text-stone-600 dark:text-zinc-300 px-3 py-1 bg-stone-100 dark:bg-[#181820] rounded-full border border-stone-200 dark:border-white/10 font-mono">
+              0 bài của tôi
+            </span>
+          </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="flex items-center justify-between text-xs text-stone-500 dark:text-zinc-400">
+          <span id="queueStatusNote">Hiển thị các thông báo đang chờ Mentor phê duyệt:</span>
+          <button onclick="loadPosts()" class="text-amber-600 dark:text-amber-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i> Tải lại danh sách
+          </button>
+        </div>
+
+        <!-- DANH SÁCH BÀI VIẾT (RÕ RÀNG GIỮA TỪ CHỐI CỦA MENTOR VÀ RÚT BÀI CỦA USER) -->
+        <div id="postsList" class="space-y-4 max-h-[680px] overflow-y-auto pr-1 custom-scrollbar">
+          <!-- Render động qua JS -->
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- PHẦN 3: PHÒNG THỬ NGHIỆM GỬI TIN NHẮN BOT ZALO (LIVE DISPATCH SANDBOX) -->
+    <!-- ============================================================== -->
+    <div id="sectionTest" class="space-y-6 hidden">
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- CỘT TRÁI (5/12): QUẢN LÝ COOKIE & HỒ SƠ BOT THẬT + DANH SÁCH NHÓM -->
+        <div class="lg:col-span-5 space-y-5">
+
+          <!-- 1. THÔNG TIN HỒ SƠ TÀI KHOẢN BOT ZALO -->
+          <div class="bg-white dark:bg-[#111116] p-6 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] space-y-4">
+            <div class="flex items-center justify-between border-b border-stone-100 dark:border-white/10 pb-3.5">
+              <div class="flex items-center gap-2 font-bold text-xs text-stone-900 dark:text-white">
+                <i data-lucide="bot" class="w-4 h-4 text-emerald-500"></i>
+                <span>Tài Khoản Zalo Bot Thực Tế</span>
+              </div>
+              <button onclick="loadBotProfile()" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer">
+                <i data-lucide="refresh-cw" class="w-3 h-3"></i> Kiểm tra phiên
+              </button>
+            </div>
+
+            <!-- Profile Info Box -->
+            <div id="botProfileBox" class="p-4 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 flex items-center gap-3.5">
+              <img id="botProfileAvatar" src="/bcn_logo.png" alt="Bot Avatar" class="w-12 h-12 rounded-full object-cover border border-stone-300 dark:border-white/10 bg-black shrink-0">
+              <div class="space-y-1 flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                  <span id="botProfileName" class="text-xs font-bold text-stone-900 dark:text-white truncate">Đang kiểm tra...</span>
+                  <span id="botProfileBadge" class="text-[9px] font-bold px-1.5 py-0.2 rounded font-mono bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">CHECKING</span>
+                </div>
+                <div class="text-[11px] font-mono text-stone-500 dark:text-zinc-400 truncate" id="botProfileUID">UID: ---</div>
+                <div class="text-[10px] text-stone-400 dark:text-zinc-500 truncate" id="botProfileStatus">Đang gửi truy vấn tới profile-wpa.chat.zalo.me...</div>
+              </div>
+            </div>
+
+            <!-- KHUNG QUÉT MÃ QR TỰ ĐỘNG LẤY COOKIE KHI HẾT HẠN -->
+            <div id="botQRContainer" class="p-4 sm:p-5 rounded-2xl bg-amber-500/10 dark:bg-amber-500/5 border border-amber-500/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="qr-code" class="w-4 h-4 text-amber-500"></i>
+                  <span class="text-xs font-bold text-amber-900 dark:text-amber-200">Đăng Nhập QR Tự Động Lấy Cookie</span>
+                </div>
+                <span id="qrLiveBadge" class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">WAITING SCAN</span>
+              </div>
+              
+              <p class="text-[11px] text-stone-600 dark:text-zinc-400 leading-normal">
+                Cookie bot đang hết hạn. Quét mã QR bên dưới bằng app Zalo điện thoại để tự động bắt Cookie và cấp quyền phát sóng:
+              </p>
+
+              <!-- QR Image & Loading Frame -->
+              <div class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-stone-200 shadow-inner relative min-h-[220px]">
+                <div id="qrLoadingSpinner" class="flex flex-col items-center gap-2 text-stone-500 text-xs py-8">
+                  <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-amber-500"></i>
+                  <span>Đang kết nối Zalo và tạo mã QR...</span>
+                </div>
+                
+                <img id="qrCodeImage" src="" alt="Zalo Login QR" class="w-48 h-48 object-contain rounded-xl hidden">
+                
+                <div id="qrOverlayScanned" class="hidden absolute inset-0 bg-white/95 rounded-2xl flex flex-col items-center justify-center p-4 text-center space-y-2">
+                  <img id="qrScannedAvatar" src="/bcn_logo.png" class="w-14 h-14 rounded-full border-2 border-emerald-500 object-cover shadow-sm">
+                  <div class="text-xs font-bold text-stone-900" id="qrScannedName">Đã quét mã!</div>
+                  <p class="text-[11px] text-emerald-600 font-semibold animate-pulse">Vui lòng bấm "Xác nhận đăng nhập" trên điện thoại...</p>
+                </div>
+              </div>
+
+              <!-- QR Status & Refresh Actions -->
+              <div class="flex items-center justify-between text-xs pt-1">
+                <div class="text-[11px] text-stone-500 dark:text-zinc-400 font-medium" id="qrStatusHelp">
+                  Hiệu lực trong 100 giây
+                </div>
+                <button type="button" onclick="generateQRLogin()" class="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1 cursor-pointer">
+                  <i data-lucide="refresh-cw" class="w-3 h-3"></i> Làm mới mã QR
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. NẠP COOKIE MỚI VÀO HỆ THỐNG -->
+          <div class="bg-white dark:bg-[#111116] p-6 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] space-y-4">
+            <div class="border-b border-stone-100 dark:border-white/10 pb-3">
+              <h3 class="text-xs font-bold text-stone-900 dark:text-white flex items-center gap-2">
+                <i data-lucide="key-round" class="w-4 h-4 text-amber-500"></i>
+                <span>Nạp Chuỗi Cookie Zalo Mới</span>
+              </h3>
+              <p class="text-[11px] text-stone-500 dark:text-zinc-400 mt-0.5">Dán Cookie lấy từ chat.zalo.me khi cookie cũ hết hạn (Mã 600).</p>
+            </div>
+
+            <div class="space-y-3">
+              <textarea id="inputNewCookie" rows="3" placeholder="Dán chuỗi Cookie Zalo vào đây (chuỗi document.cookie hoặc chứa zpw_sek, zpsid)..."
+                class="w-full text-xs font-mono p-3 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 custom-scrollbar"></textarea>
+
+              <button onclick="submitNewCookie()" id="btnSaveCookie" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white transition flex items-center justify-center gap-2 cursor-pointer shadow-xs">
+                <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                <span>Lưu & Kích Hoạt Cookie Ngay</span>
+              </button>
+
+              <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-800 dark:text-amber-300 leading-relaxed space-y-1">
+                <div class="font-bold flex items-center gap-1.5">
+                  <i data-lucide="info" class="w-3.5 h-3.5"></i> Hướng dẫn lấy Cookie nhanh:
+                </div>
+                <ol class="list-decimal list-inside space-y-0.5 text-[10px] opacity-90">
+                  <li>Mở tab <code class="bg-amber-500/20 px-1 rounded">chat.zalo.me</code> đã đăng nhập tài khoản Bot.</li>
+                  <li>Bấm <kbd class="font-mono bg-amber-500/20 px-1 rounded">F12</kbd> &rarr; tab <b>Console</b> &rarr; gõ <code class="bg-amber-500/20 px-1 rounded">document.cookie</code> và bấm Enter.</li>
+                  <li>Copy chuỗi kết quả và dán vào ô trên, bấm nút Lưu.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CỘT PHẢI (7/12): KHUNG ĐIỀU KHIỂN BẮN TIN & LIVE DEVELOPER CONSOLE -->
+        <div class="lg:col-span-7 space-y-5">
+
+          <!-- 1. KHUNG SOẠN & BẮN TIN THỬ NGHIỆM -->
+          <div class="bg-white dark:bg-[#111116] p-6 sm:p-7 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] space-y-5">
+            <div class="border-b border-stone-100 dark:border-white/10 pb-4 flex items-center justify-between">
+              <div>
+                <h2 class="text-sm font-bold text-stone-900 dark:text-white flex items-center gap-2">
+                  <i data-lucide="send" class="w-4 h-4 text-emerald-500"></i>
+                  Phòng Điều Khiển Gửi Tin Thử Nghiệm (Live Sandbox)
+                </h2>
+                <p class="text-xs text-stone-500 dark:text-zinc-400 mt-0.5">Bắn trực tiếp tin nhắn thật vào Zalo để kiểm tra chất lượng kết nối và Cookie.</p>
+              </div>
+              <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-full font-mono border border-emerald-200 dark:border-emerald-800">READY</span>
+            </div>
+
+            <!-- DROPDOWN CHỌN NHÓM ĐÍCH (DROPBOX) -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-stone-700 dark:text-zinc-300 flex items-center gap-1.5">
+                  <i data-lucide="layers" class="w-3.5 h-3.5 text-amber-500"></i>
+                  <span>Nhóm Zalo Đích (Chọn từ danh sách nhóm thật)</span>
+                </label>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800" id="badgeTargetSafe">NHÓM THẬT</span>
+                  <button type="button" onclick="loadTestGroups(true)" class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer">
+                    <i data-lucide="refresh-cw" id="btnRefreshGroups" class="w-3 h-3"></i> Tải lại nhóm
+                  </button>
+                </div>
+              </div>
+              
+              <div class="flex gap-2 items-center">
+                <div class="relative flex-1">
+                  <select id="targetTestGroupSelect" onchange="handleTargetGroupDropdownChange(this.value)"
+                    class="w-full text-xs px-4 py-3 pr-10 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white focus:outline-none focus:border-amber-500 font-medium cursor-pointer transition appearance-none shadow-xs">
+                    <option value="">-- Đang nạp danh sách nhóm Zalo thật... --</option>
+                  </select>
+                  <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400 dark:text-zinc-500">
+                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                  </div>
+                </div>
+
+                <button type="button" onclick="inspectCurrentGroupMembers()" class="px-3.5 py-3 rounded-2xl bg-indigo-500/10 hover:bg-indigo-600 hover:text-white text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow-xs cursor-pointer" title="Xem danh bạ thành viên nhóm được chọn">
+                  <i data-lucide="users" class="w-4 h-4"></i>
+                  <span>Xem Thành Viên</span>
+                </button>
+              </div>
+
+              <input type="hidden" id="targetTestGroupId" value="">
+              
+              <div class="flex items-center justify-between text-[10px] text-stone-400 dark:text-zinc-500 pt-0.5">
+                <span class="truncate">💡 Đang chọn: <b class="text-stone-700 dark:text-zinc-300 font-mono" id="currentSelectedGroupHint">Chưa chọn nhóm</b></span>
+                <span class="font-mono shrink-0 ml-2" id="currentSelectedGroupIdHint">ID: ---</span>
+              </div>
+            </div>
+
+            <!-- Mẫu tin nhanh (Icon SVG xịn, không dùng emoji mặc định) -->
+            <div class="space-y-1.5">
+              <label class="block text-[11px] font-bold text-stone-600 dark:text-zinc-400">Chọn mẫu nội dung test nhanh:</label>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" onclick="setTestMessageTemplate('ping')" 
+                  class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-100 dark:bg-zinc-800/80 hover:bg-stone-200 dark:hover:bg-zinc-700 text-stone-800 dark:text-zinc-200 border border-stone-200 dark:border-white/10 transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                  <i data-lucide="wifi" class="w-3.5 h-3.5 text-emerald-500"></i>
+                  <span>Ping Kết Nối</span>
+                </button>
+                <button type="button" onclick="setTestMessageTemplate('tagall')" 
+                  class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-100 dark:bg-zinc-800/80 hover:bg-stone-200 dark:hover:bg-zinc-700 text-stone-800 dark:text-zinc-200 border border-stone-200 dark:border-white/10 transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                  <i data-lucide="megaphone" class="w-3.5 h-3.5 text-amber-500"></i>
+                  <span>Réo Chuông (@all)</span>
+                </button>
+                <button type="button" onclick="setTestMessageTemplate('report')" 
+                  class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-100 dark:bg-zinc-800/80 hover:bg-stone-200 dark:hover:bg-zinc-700 text-stone-800 dark:text-zinc-200 border border-stone-200 dark:border-white/10 transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                  <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-sky-500"></i>
+                  <span>Báo Cáo Tiến Độ</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Message Content -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-stone-700 dark:text-zinc-300">Nội dung tin nhắn test</label>
+              <textarea id="testMessageText" rows="3" placeholder="Nhập nội dung tin nhắn bạn muốn gửi thử vào nhóm Zalo..."
+                class="w-full text-xs px-4 py-3 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 custom-scrollbar">[Test Bot BCN] Kiểm tra kết nối dịch vụ phát sóng Zalo thời gian thực.</textarea>
+            </div>
+
+            <!-- Tùy chọn tag all -->
+            <label class="flex items-center gap-2.5 p-3 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 cursor-pointer">
+              <input type="checkbox" id="testTagAll" checked class="w-4 h-4 text-indigo-600 rounded cursor-pointer accent-indigo-600">
+              <span class="text-xs font-bold text-stone-800 dark:text-zinc-200">Gắn tag @all (Réo chuông toàn nhóm test)</span>
+            </label>
+
+            <!-- Nút gửi live dispatch -->
+            <button onclick="executeLiveSend()" id="btnExecuteSend"
+              class="w-full py-3.5 px-6 rounded-2xl text-xs font-extrabold uppercase tracking-wider text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 transition-all duration-300 shadow-[0_4px_20px_rgba(16,185,129,0.25)] flex items-center justify-center gap-2.5 cursor-pointer">
+              <i data-lucide="zap" class="w-4 h-4"></i>
+              <span id="btnExecuteSendText">BẮN TIN NHẮN THẬT NGAY (LIVE DISPATCH)</span>
+            </button>
+          </div>
+
+          <!-- 2. LIVE DEVELOPER CONSOLE (RAW RESPONSE & DIAGNOSTICS) -->
+          <div class="bg-white dark:bg-[#111116] p-6 sm:p-7 rounded-3xl border border-stone-200/90 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] space-y-4">
+            <div class="flex items-center justify-between border-b border-stone-100 dark:border-white/10 pb-3">
+              <div class="flex items-center gap-2 font-bold text-xs text-stone-900 dark:text-white">
+                <i data-lucide="terminal" class="w-4 h-4 text-indigo-500"></i>
+                <span>Live Developer Console (Nhật Ký Phản Hồi Từ Zalo Server)</span>
+              </div>
+              <div class="flex items-center gap-2 font-mono text-[10px]">
+                <span id="consoleHttpStatus" class="px-2 py-0.5 rounded font-bold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">HTTP ---</span>
+                <span id="consoleLatency" class="px-2 py-0.5 rounded font-bold bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">--- ms</span>
+              </div>
+            </div>
+
+            <!-- Diagnosis Status Box -->
+            <div id="consoleStatusBox" class="p-4 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200 dark:border-white/10 text-xs leading-relaxed text-stone-600 dark:text-zinc-400 flex items-start gap-3">
+              <i data-lucide="info" class="w-4 h-4 text-indigo-500 shrink-0 mt-0.5"></i>
+              <div id="consoleStatusText">
+                Chưa có yêu cầu gửi tin nào được thực hiện trong phiên làm việc này. Hãy nhấn nút <b>"BẮN TIN NHẮN THẬT NGAY"</b> ở trên để kiểm tra kết nối với máy chủ Zalo.
+              </div>
+            </div>
+
+            <!-- Raw Response Viewer -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] font-mono text-stone-500 dark:text-zinc-400">
+                <span>RAW RESPONSE BODY:</span>
+                <button onclick="copyRawConsole()" class="hover:text-stone-900 dark:hover:text-white flex items-center gap-1 cursor-pointer">
+                  <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                </button>
+              </div>
+              <pre id="consoleRawJson" class="w-full p-4 rounded-2xl bg-stone-900 dark:bg-[#0c0c10] text-emerald-400 font-mono text-[11px] overflow-x-auto max-h-[220px] custom-scrollbar border border-stone-800 dark:border-white/10">{
+  "status": "idle",
+  "message": "Ready to test live dispatch"
+}</pre>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- TOAST THÔNG BÁO -->
+  <div id="toast" style="display: none;"></div>
+
+  <!-- JAVASCRIPT ĐIỀU KHIỂN HỆ THỐNG -->
+  <script>
+    let currentUser = null;
+    let currentMainSection = "compose"; // "compose" hoặc "queue"
+    let mentorActiveTab = "pending";     // "pending" hoặc "history"
+
+    // 1. THEME TOGGLE (DARK / LIGHT MODE - MẶC ĐỊNH DARK)
+    function initTheme() {
+      const savedTheme = localStorage.getItem('bcn_theme');
+      const isDark = savedTheme === 'light' ? false : true;
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      updateThemeIcons(isDark);
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('bcn_theme', isDark ? 'dark' : 'light');
+      updateThemeIcons(isDark);
+    }
+
+    function updateThemeIcons(isDark) {
+      const iconMain = document.getElementById("themeToggleIcon");
+      const iconLogin = document.getElementById("loginThemeIcon");
+      
+      if (iconMain) {
+        iconMain.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+      }
+      if (iconLogin) {
+        iconLogin.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+      }
+      lucide.createIcons();
+    }
+
+    // 2. CHUYỂN PHẦN CHÍNH VỚI SLIDING PILL INDICATOR TRƯỢT MƯỢT MÀ (ẢNH 2)
+    function updateSlidingIndicator(targetBtn) {
+      const indicator = document.getElementById("navSlidingIndicator");
+      const wrapper = document.getElementById("navTabsWrapper");
+      if (!indicator || !targetBtn || !wrapper) return;
+      
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const btnRect = targetBtn.getBoundingClientRect();
+      
+      indicator.style.left = `${btnRect.left - wrapperRect.left}px`;
+      indicator.style.width = `${btnRect.width}px`;
+    }
+
+    function switchMainSection(section, btnElement) {
+      currentMainSection = section;
+      const secCompose = document.getElementById("sectionCompose");
+      const secQueue = document.getElementById("sectionQueue");
+      const secTest = document.getElementById("sectionTest");
+
+      const tabCompose = document.getElementById("navTabCompose");
+      const tabQueue = document.getElementById("navTabQueue");
+      const tabTest = document.getElementById("navTabTest");
+
+      const targetBtn = btnElement || (section === 'compose' ? tabCompose : (section === 'queue' ? tabQueue : tabTest));
+      updateSlidingIndicator(targetBtn);
+
+      secCompose.classList.add("hidden");
+      secQueue.classList.add("hidden");
+      if (secTest) secTest.classList.add("hidden");
+
+      const inactiveClass = "relative z-10 text-stone-600 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white px-4 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-colors duration-200 cursor-pointer";
+      const activeClass = "relative z-10 text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-colors duration-200 cursor-pointer";
+
+      tabCompose.className = inactiveClass;
+      tabQueue.className = inactiveClass;
+      if (tabTest) tabTest.className = inactiveClass;
+
+      if (section === "compose") {
+        secCompose.classList.remove("hidden");
+        tabCompose.className = activeClass;
+      } else if (section === "queue") {
+        secQueue.classList.remove("hidden");
+        tabQueue.className = activeClass;
+        loadPosts();
+      } else if (section === "test") {
+        if (secTest) secTest.classList.remove("hidden");
+        if (tabTest) tabTest.className = activeClass;
+        loadBotProfile();
+        loadTestGroups();
+      }
+      lucide.createIcons();
+    }
+
+    // 3. ĐỒNG HỒ THỜI GIAN THỰC TẾ
+    function startHeaderClock() {
+      function updateClock() {
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        const h = pad(now.getHours());
+        const m = pad(now.getMinutes());
+        const s = pad(now.getSeconds());
+        const day = pad(now.getDate());
+        const month = pad(now.getMonth() + 1);
+        const year = now.getFullYear();
+        
+        const clockEl = document.getElementById("liveHeaderClock");
+        if (clockEl) {
+          clockEl.textContent = `${h}:${m}:${s} - ${day}/${month}/${year}`;
+        }
+
+        // Nếu không có hẹn giờ cụ thể thì thời gian tin nhắn Zalo chạy theo giờ hiện tại
+        const schedVal = document.getElementById("postScheduledAt")?.value;
+        const msgTimeEl = document.getElementById("previewMessageTime");
+        if (msgTimeEl && !schedVal) {
+          msgTimeEl.textContent = `${h}:${m}`;
+        }
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
+
+    // 4. MỞ LỊCH CHỌN THỜI GIAN & CHỌN MỐC GIỜ NHANH
+    function openDateTimePicker() {
+      const el = document.getElementById("postScheduledAt");
+      if (!el) return;
+      try {
+        if (typeof el.showPicker === 'function') {
+          el.showPicker();
+        } else {
+          el.focus();
+        }
+      } catch (err) {
+        el.focus();
+      }
+    }
+
+    function formatToLocalDateTimeInput(d) {
+      const pad = (n) => String(n).padStart(2, '0');
+      const y = d.getFullYear();
+      const m = pad(d.getMonth() + 1);
+      const day = pad(d.getDate());
+      const h = pad(d.getHours());
+      const min = pad(d.getMinutes());
+      return `${y}-${m}-${day}T${h}:${min}`;
+    }
+
+    function setQuickSchedule(mode) {
+      const input = document.getElementById("postScheduledAt");
+      if (!input) return;
+
+      const now = new Date();
+
+      if (mode === 'now') {
+        input.value = "";
+        showToast("Đã chọn chế độ: Phát sóng ngay lập tức khi Mentor duyệt!", "info");
+      } else if (mode === '15m') {
+        const d = new Date(now.getTime() + 15 * 60000);
+        input.value = formatToLocalDateTimeInput(d);
+        showToast("Đã lên lịch phát sau 15 phút!", "info");
+      } else if (mode === '1h') {
+        const d = new Date(now.getTime() + 60 * 60000);
+        input.value = formatToLocalDateTimeInput(d);
+        showToast("Đã lên lịch phát sau 1 giờ!", "info");
+      } else if (mode === 'tonight') {
+        const d = new Date();
+        d.setHours(19, 30, 0, 0);
+        if (d <= now) {
+          d.setDate(d.getDate() + 1);
+        }
+        input.value = formatToLocalDateTimeInput(d);
+        showToast("Đã lên lịch phát vào 19:30 tối nay!", "info");
+      } else if (mode === 'tomorrow') {
+        const d = new Date();
+        d.setDate(d.getDate() + 1);
+        d.setHours(8, 30, 0, 0);
+        input.value = formatToLocalDateTimeInput(d);
+        showToast("Đã lên lịch phát vào 08:30 sáng mai!", "info");
+      }
+
+      handleScheduleChange();
+    }
+
+    function handleScheduleChange() {
+      const val = document.getElementById("postScheduledAt")?.value;
+      const descEl = document.getElementById("scheduleTextDesc");
+      const badgeEl = document.getElementById("scheduleStatusBadge");
+
+      if (val) {
+        const d = new Date(val);
+        const pad = (n) => String(n).padStart(2, '0');
+        const formatted = `${pad(d.getHours())}:${pad(d.getMinutes())} ngày ${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+        if (descEl) descEl.textContent = `Đã chọn: ${formatted}`;
+        if (badgeEl) {
+          badgeEl.textContent = "ĐÃ HẸN GIỜ";
+          badgeEl.className = "text-[10px] text-amber-700 dark:text-amber-400 font-mono bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-700 font-bold";
+        }
+      } else {
+        if (descEl) descEl.textContent = "Mặc định: Phát ngay khi Mentor duyệt";
+        if (badgeEl) {
+          badgeEl.textContent = "GỬI NGAY";
+          badgeEl.className = "text-[10px] text-indigo-600 dark:text-indigo-400 font-mono bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800";
+        }
+      }
+      updateLivePreview();
+    }
+
+    // 5. CẬP NHẬT GIAO DIỆN XEM TRƯỚC REALTIME (NỀN TRẮNG ZALO CHUẨN)
+    function updateLivePreview() {
+      const titleInput = document.getElementById("postTitle").value.trim();
+      const contentInput = document.getElementById("postContent").value.trim();
+      const tagAllChecked = document.getElementById("tagAllToggle").checked;
+      const schedVal = document.getElementById("postScheduledAt").value;
+
+      const titleEl = document.getElementById("previewPostTitle");
+      const contentEl = document.getElementById("previewPostContent");
+      const tagSpan = document.getElementById("previewTagAllSpan");
+      const timeEl = document.getElementById("previewMessageTime");
+      const schedBadge = document.getElementById("previewScheduleBadge");
+
+      if (tagAllChecked) {
+        tagSpan.classList.remove("hidden");
+      } else {
+        tagSpan.classList.add("hidden");
+      }
+
+      titleEl.textContent = titleInput || "Họp toàn Ban Công Nghệ rà soát tiến độ";
+      contentEl.textContent = contentInput || "Tối nay 19:30 họp Ban Công Nghệ để rà soát tiến độ dự án tuần mới. Đề nghị mọi người có mặt đầy đủ.";
+
+      if (schedVal) {
+        const d = new Date(schedVal);
+        const pad = (n) => String(n).padStart(2, '0');
+        timeEl.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        schedBadge.textContent = `Hẹn lúc: ${pad(d.getHours())}:${pad(d.getMinutes())} - ${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+        schedBadge.classList.remove("hidden");
+      } else {
+        const now = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        timeEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+        schedBadge.classList.add("hidden");
+      }
+    }
+
+    // 6. ĐĂNG NHẬP NHANH THEO VAI TRÒ
+    function fastLogin(role) {
+      if (role === "mentor") {
+        currentUser = {
+          uid: "111111",
+          name: "Trần Mentor (Key Bạc)",
+          role: "mentor"
+        };
+        showToast("Đã vào hệ thống với vai trò MENTOR! Bạn có quyền duyệt hoặc từ chối bài.", "success");
+      } else {
+        currentUser = {
+          uid: "999999",
+          name: "Nguyễn Văn A (Thành viên BCN)",
+          role: "user"
+        };
+        showToast("Đã vào hệ thống với vai trò NGƯỜI THƯỜNG! Bạn chỉ thấy bài của chính mình.", "info");
+      }
+      displayUserSession();
+    }
+
+    // 7. KIỂM TRA CALLBACK ZALO OAUTH NẾU CÓ
+    function checkZaloOAuthCallback() {
+      const params = new URLSearchParams(window.location.search);
+      const zaloUID = params.get("zalo_uid");
+      const name = params.get("name");
+      const role = params.get("role");
+
+      if (zaloUID && name && role) {
+        currentUser = {
+          uid: zaloUID,
+          name: name,
+          role: role
+        };
+
+        window.history.replaceState({}, document.title, window.location.pathname);
+        displayUserSession();
+        showToast(`Đăng nhập Zalo thật thành công! Server cấp quyền: ${role.toUpperCase()}`, "success");
+      }
+    }
+
+    // 8. HIỂN THỊ PHIÊN LÀM VIỆC & PHÂN QUYỀN
+    function displayUserSession() {
+      if (!currentUser) return;
+
+      document.getElementById("navUserName").textContent = `Hello, ${currentUser.name}`;
+      document.getElementById("navUserUID").textContent = `UID: ${currentUser.uid}`;
+
+      const navRoleBadge = document.getElementById("navRoleBadge");
+      const queueTitle = document.getElementById("queueSectionTitle");
+      const queueSubtitle = document.getElementById("queueSectionSubtitle");
+      const mentorTabs = document.getElementById("mentorTabsContainer");
+      const userBadgeWrapper = document.getElementById("userBadgeWrapper");
+      const navTabTitle = document.getElementById("navTabQueueTitle");
+
+      if (currentUser.role === "mentor") {
+        navRoleBadge.innerHTML = `<i data-lucide="key" class="w-2.5 h-2.5"></i> KEY BẠC`;
+        navRoleBadge.className = "text-[9px] font-bold px-1.5 py-0.2 rounded font-mono bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800 inline-flex items-center gap-1";
+
+        queueTitle.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-amber-500"></i> Trung tâm điều phối phê duyệt thông báo`;
+        queueSubtitle.textContent = `Quyền quyết định phát sóng thông báo vào nhóm Zalo BCN`;
+        navTabTitle.textContent = "Điều Phối Duyệt";
+        mentorTabs.classList.remove("hidden");
+        userBadgeWrapper.classList.add("hidden");
+      } else {
+        navRoleBadge.innerHTML = `<i data-lucide="user" class="w-2.5 h-2.5"></i> THÀNH VIÊN`;
+        navRoleBadge.className = "text-[9px] font-bold px-1.5 py-0.2 rounded font-mono bg-stone-100 dark:bg-zinc-800 text-stone-700 dark:text-zinc-300 border border-stone-300 dark:border-zinc-700 inline-flex items-center gap-1";
+
+        queueTitle.innerHTML = `<i data-lucide="file-text" class="w-4 h-4 text-stone-400"></i> Bài viết của tôi (My Submissions)`;
+        queueSubtitle.textContent = `Hàng đợi bài nộp của tài khoản UID: ${currentUser.uid}`;
+        navTabTitle.textContent = "Bài Viết Của Tôi";
+        mentorTabs.classList.add("hidden");
+        userBadgeWrapper.classList.remove("hidden");
+      }
+
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("mainDashboard").classList.remove("hidden");
+
+      setTimeout(() => {
+        updateSlidingIndicator(document.getElementById("navTabCompose"));
+      }, 50);
+
+      updateLivePreview();
+      loadPosts();
+      lucide.createIcons();
+    }
+
+    // 9. CHUYỂN SUB-TAB CỦA MENTOR (Chờ duyệt / Lịch sử)
+    function switchMentorTab(tab) {
+      mentorActiveTab = tab;
+      const btnPending = document.getElementById("tabPendingBtn");
+      const btnHistory = document.getElementById("tabHistoryBtn");
+      const note = document.getElementById("queueStatusNote");
+
+      if (tab === "pending") {
+        btnPending.className = "px-4 py-1.5 rounded-full font-bold text-stone-900 dark:text-white bg-white dark:bg-[#252532] shadow-xs transition-all duration-200 cursor-pointer flex items-center gap-1.5";
+        btnHistory.className = "px-4 py-1.5 rounded-full font-medium text-stone-500 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white transition-all duration-200 cursor-pointer flex items-center gap-1.5";
+        note.textContent = "Hiển thị các thông báo đang chờ Mentor phê duyệt:";
+      } else {
+        btnHistory.className = "px-4 py-1.5 rounded-full font-bold text-stone-900 dark:text-white bg-white dark:bg-[#252532] shadow-xs transition-all duration-200 cursor-pointer flex items-center gap-1.5";
+        btnPending.className = "px-4 py-1.5 rounded-full font-medium text-stone-500 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white transition-all duration-200 cursor-pointer flex items-center gap-1.5";
+        note.textContent = "Lịch sử các bài viết đã phê duyệt, từ chối hoặc rút lại:";
+      }
+      loadPosts();
+    }
+
+    // 10. FORMAT THỜI GIAN ĐẦY ĐỦ CẢ NGÀY THÁNG NĂM
+    function formatFullDateTime(isoString) {
+      if (!isoString) return "--";
+      const d = new Date(isoString);
+      if (isNaN(d.getTime())) return isoString;
+      const pad = (n) => String(n).padStart(2, '0');
+      const hours = pad(d.getHours());
+      const minutes = pad(d.getMinutes());
+      const seconds = pad(d.getSeconds());
+      const day = pad(d.getDate());
+      const month = pad(d.getMonth() + 1);
+      const year = d.getFullYear();
+      return `${hours}:${minutes}:${seconds} - ${day}/${month}/${year}`;
+    }
+
+    // 11. TẢI DANH SÁCH BÀI VIẾT TỪ SERVER & CẬP NHẬT STATS COUNTER
+    async function loadPosts() {
+      if (!currentUser) return;
+
+      const list = document.getElementById("postsList");
+      if (list) {
+        list.innerHTML = `<div class="p-8 text-center text-xs text-stone-400 dark:text-zinc-500">Đang đồng bộ dữ liệu bài viết...</div>`;
+      }
+
+      try {
+        // Tải toàn bộ bài để tính KPI stats 3 chỉ số thực tế
+        const resAll = await fetch(`/api/posts?role=mentor`);
+        if (resAll.ok) {
+          const allPosts = await resAll.json();
+          let countPending = 0;
+          let countApproved = 0;
+          let countRejected = 0;
+          allPosts.forEach(p => {
+            if (p.status === "pending") countPending++;
+            if (p.status === "approved") countApproved++;
+            if (p.status === "rejected" || p.status === "cancelled") countRejected++;
+          });
+          document.getElementById("statPendingCount").textContent = countPending;
+          document.getElementById("statApprovedCount").textContent = countApproved;
+          document.getElementById("statRejectedCount").textContent = countRejected;
+          document.getElementById("navTabPendingCount").textContent = countPending;
+          document.getElementById("tabPendingBadge").textContent = countPending;
+        }
+
+        let url = `/api/posts?role=${currentUser.role}&uid=${currentUser.uid}`;
+        if (currentUser.role === "mentor") {
+          url += `&tab=${mentorActiveTab}`;
+        }
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Lỗi nạp bài từ máy chủ");
+        const posts = await res.json();
+
+        const badgeUser = document.getElementById("userPostCountBadge");
+        if (badgeUser) badgeUser.textContent = `${posts.length} bài của tôi`;
+
+        if (!list) return;
+
+        if (posts.length === 0) {
+          if (currentUser.role === "mentor") {
+            if (mentorActiveTab === "pending") {
+              list.innerHTML = `
+                <div class="p-10 text-center bg-stone-50/70 dark:bg-[#16161f] rounded-2xl border border-dashed border-stone-200 dark:border-white/10 space-y-2">
+                  <i data-lucide="check-circle-2" class="w-7 h-7 text-emerald-500 mx-auto"></i>
+                  <span class="text-xs font-bold text-stone-800 dark:text-zinc-200 block">Hiện không có thông báo nào chờ duyệt</span>
+                  <span class="text-[11px] text-stone-400 dark:text-zinc-500 block">Hàng đợi sạch sẽ. Tất cả bài viết đã được xử lý xong.</span>
+                </div>
+              `;
+            } else {
+              list.innerHTML = `
+                <div class="p-10 text-center bg-stone-50/70 dark:bg-[#16161f] rounded-2xl border border-dashed border-stone-200 dark:border-white/10">
+                  <span class="text-xs text-stone-400 dark:text-zinc-500">Chưa có lịch sử phê duyệt hoặc từ chối nào.</span>
+                </div>
+              `;
+            }
+          } else {
+            list.innerHTML = `
+              <div class="p-10 text-center bg-stone-50/70 dark:bg-[#16161f] rounded-2xl border border-dashed border-stone-200 dark:border-white/10 space-y-2">
+                <i data-lucide="inbox" class="w-7 h-7 text-stone-400 dark:text-zinc-500 mx-auto"></i>
+                <span class="text-xs font-bold text-stone-800 dark:text-zinc-200 block">Bạn chưa nộp bài viết nào lên hệ thống</span>
+                <span class="text-[11px] text-stone-400 dark:text-zinc-500 block">Bấm vào mục "Soạn & Xem Trước" ở trên thanh điều hướng để tạo thông báo mới.</span>
+              </div>
+            `;
+          }
+          lucide.createIcons();
+          return;
+        }
+
+        list.innerHTML = "";
+        posts.forEach(p => {
+          let statusBadge = "";
+          if (p.status === "pending") {
+            statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-[10px] font-bold font-mono">CHỜ DUYỆT</span>`;
+          } else if (p.status === "approved") {
+            statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold font-mono">ĐÃ PHÊ DUYỆT</span>`;
+          } else if (p.status === "rejected") {
+            statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 text-[10px] font-bold font-mono">ĐÃ TỪ CHỐI</span>`;
+          } else if (p.status === "cancelled") {
+            statusBadge = `<span class="px-2.5 py-0.5 rounded-full bg-stone-100 dark:bg-zinc-800 text-stone-600 dark:text-zinc-400 border border-stone-300 dark:border-zinc-700 text-[10px] font-bold font-mono">ĐÃ RÚT BÀI</span>`;
+          }
+
+          const isMentor = currentUser.role === "mentor";
+          const isAuthor = currentUser.uid === p.author_uid;
+
+          const timeCreatedStr = formatFullDateTime(p.created_at);
+          let decisionTimeStr = "";
+          if (p.status === "approved" && p.approved_at) {
+            decisionTimeStr = `Duyệt lúc: ${formatFullDateTime(p.approved_at)} bởi ${p.approved_by_name || 'Mentor'}`;
+          } else if (p.status === "rejected" && p.rejected_at) {
+            decisionTimeStr = `Từ chối lúc: ${formatFullDateTime(p.rejected_at)} bởi ${p.rejected_by_name || 'Mentor'}`;
+          }
+
+          let scheduledTimeStr = "";
+          if (p.scheduled_at) {
+            scheduledTimeStr = `<span class="text-indigo-600 dark:text-indigo-400 font-medium">Hẹn phát: ${formatFullDateTime(p.scheduled_at)}</span> &bull; `;
+          }
+
+          const card = document.createElement("div");
+          card.className = "p-5 rounded-2xl bg-stone-50/60 dark:bg-[#16161f] border border-stone-200/90 dark:border-white/10 hover:border-stone-300 dark:hover:border-white/20 transition shadow-xs space-y-3";
+          card.innerHTML = `
+            <div class="flex items-start justify-between gap-3">
+              <div class="space-y-1.5 flex-1">
+                <div class="flex items-center gap-2 flex-wrap">
+                  ${statusBadge}
+                  <span class="text-sm font-bold text-stone-900 dark:text-white">${p.title}</span>
+                  ${p.tag_all ? '<span class="text-[9px] font-bold font-mono bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-800">TAG @ALL</span>' : ''}
+                  ${p.scheduled_at ? '<span class="text-[9px] font-bold font-mono bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">CÓ HẸN GIỜ</span>' : ''}
+                </div>
+                <p class="text-xs text-stone-600 dark:text-zinc-300 leading-relaxed whitespace-pre-line">${p.content}</p>
+              </div>
+            </div>
+
+            <!-- Metadata thời gian chi tiết -->
+            <div class="pt-3 border-t border-stone-200/80 dark:border-white/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 text-[11px] text-stone-500 dark:text-zinc-400">
+              <div class="space-y-0.5">
+                <div>Tác giả: <b class="text-stone-800 dark:text-zinc-200">${p.author_name}</b> <span class="font-mono text-stone-400 dark:text-zinc-500">(UID: ${p.author_uid})</span></div>
+                <div class="font-mono text-[10px] text-stone-400 dark:text-zinc-500">
+                  ${scheduledTimeStr}Tạo lúc: <span class="text-stone-600 dark:text-zinc-300">${timeCreatedStr}</span>
+                  ${decisionTimeStr ? ` &bull; <span class="text-stone-600 dark:text-zinc-300">${decisionTimeStr}</span>` : ''}
+                </div>
+              </div>
+
+              <!-- HÀNH ĐỘNG RÕ RÀNG: MENTOR DUYỆT/TỪ CHỐI; CHỈ AUTHOR MỚI ĐƯỢC RÚT BÀI -->
+              <div class="flex items-center gap-2 shrink-0">
+                ${p.status === "pending" ? `
+                  ${isMentor ? `
+                    <button onclick="approvePost('${p.id}')" 
+                      class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white cursor-pointer shadow-xs transition flex items-center gap-1">
+                      <i data-lucide="check" class="w-3.5 h-3.5"></i> Duyệt & Bắn Bot
+                    </button>
+                    <button onclick="rejectPost('${p.id}')" 
+                      class="px-2.5 py-1.5 rounded-xl text-xs font-medium bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-950/70 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900 cursor-pointer transition flex items-center gap-1">
+                      <i data-lucide="x" class="w-3.5 h-3.5"></i> Từ chối
+                    </button>
+                  ` : ''}
+
+                  <!-- Nút RÚT BÀI / HỦY NỘP DÀNH RIÊNG CHO TÁC GIẢ BÀI VIẾT (USER) -->
+                  ${(!isMentor && isAuthor) ? `
+                    <button onclick="cancelPost('${p.id}', 'cancel')" title="Rút lại bài viết này khỏi hàng đợi"
+                      class="px-2.5 py-1.5 rounded-xl text-xs font-medium bg-stone-100 dark:bg-zinc-800 hover:bg-stone-200 dark:hover:bg-zinc-700 text-stone-700 dark:text-zinc-200 border border-stone-300 dark:border-zinc-700 cursor-pointer transition flex items-center gap-1">
+                      <i data-lucide="corner-up-left" class="w-3 h-3"></i> Rút lại bài
+                    </button>
+                  ` : ''}
+                ` : ''}
+
+                <!-- Mentor có nút HOÀN TÁC VỀ CHỜ DUYỆT nếu đã lỡ duyệt nhầm -->
+                ${(isMentor && p.status === "approved") ? `
+                  <button onclick="cancelPost('${p.id}', 'revert_pending')" title="Duyệt nhầm? Bấm để hoàn tác bài viết về trạng thái Chờ Duyệt"
+                    class="px-3 py-1.5 rounded-xl text-xs font-medium bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-950/70 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 cursor-pointer transition flex items-center gap-1.5">
+                    <i data-lucide="undo-2" class="w-3.5 h-3.5"></i> Hoàn Tác Về Chờ Duyệt
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+
+        lucide.createIcons();
+      } catch (e) {
+        if (list) {
+          list.innerHTML = `<div class="p-8 text-center text-xs text-rose-500">Lỗi nạp bài: ${e.message}</div>`;
+        }
+      }
+    }
+
+    // 12. TẠO BÀI MỚI VÀ GỬI LÊN HÀNG ĐỢI
+    async function handleCreatePost(e) {
+      e.preventDefault();
+      const title = document.getElementById("postTitle").value.trim();
+      const content = document.getElementById("postContent").value.trim();
+      const tagAll = document.getElementById("tagAllToggle").checked;
+      const scheduledAt = document.getElementById("postScheduledAt").value;
+
+      if (!title || !content) return;
+
+      try {
+        const res = await fetch('/api/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title,
+            content,
+            author_uid: currentUser.uid,
+            author_name: currentUser.name,
+            author_role: currentUser.role,
+            tag_all: tagAll,
+            scheduled_at: scheduledAt || ""
+          })
+        });
+
+        if (!res.ok) throw new Error("Không gửi được bài lên hàng đợi");
+        
+        document.getElementById("postTitle").value = "";
+        document.getElementById("postContent").value = "";
+        document.getElementById("postScheduledAt").value = "";
+        updateLivePreview();
+
+        showToast(`Đã nộp bài "${title}" lên hàng đợi CHỜ PHÊ DUYỆT!`, "success");
+        loadPosts();
+      } catch (err) {
+        showToast(`Lỗi: ${err.message}`, "error");
+      }
+    }
+
+    // 13. MENTOR PHÊ DUYỆT BÀI VÀ BẮN BOT ZALO
+    async function approvePost(id) {
+      if (currentUser.role !== "mentor") {
+        showToast("Lỗi 403 Forbidden: Chỉ Mentor mới có quyền duyệt!", "error");
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/posts/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            post_id: id,
+            mentor_uid: currentUser.uid,
+            mentor_name: currentUser.name,
+            role: currentUser.role
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Lỗi phê duyệt");
+
+        showToast(`Mentor đã DUYỆT bài! Bot Zalo đã phát sóng vào nhóm BCN.`, "success");
+        
+        if (data.post) {
+          document.getElementById("previewPostTitle").textContent = data.post.title;
+          document.getElementById("previewPostContent").textContent = data.post.content;
+          if (data.post.tag_all) {
+            document.getElementById("previewTagAllSpan").classList.remove("hidden");
+          } else {
+            document.getElementById("previewTagAllSpan").classList.add("hidden");
+          }
+        }
+
+        loadPosts();
+      } catch (err) {
+        showToast(`Lỗi: ${err.message}`, "error");
+      }
+    }
+
+    // 14. MENTOR TỪ CHỐI BÀI
+    async function rejectPost(id) {
+      if (currentUser.role !== "mentor") {
+        showToast("Lỗi 403 Forbidden: Chỉ Mentor mới có quyền từ chối!", "error");
+        return;
+      }
+
+      const reason = prompt("Nhập lý do từ chối bài viết này:", "Nội dung chưa đạt yêu cầu");
+      if (reason === null) return; // User bấm Cancel
+
+      try {
+        const res = await fetch('/api/posts/reject', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            post_id: id,
+            mentor_uid: currentUser.uid,
+            mentor_name: currentUser.name,
+            role: currentUser.role,
+            reason: reason || "Nội dung chưa đạt yêu cầu"
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Lỗi từ chối");
+
+        showToast("Đã từ chối bài viết thành công.", "info");
+        loadPosts();
+      } catch (err) {
+        showToast(`Lỗi: ${err.message}`, "error");
+      }
+    }
+
+    // 15. TÁC GIẢ RÚT LẠI BÀI HOẶC MENTOR HOÀN TÁC VỀ CHỜ DUYỆT
+    async function cancelPost(id, action) {
+      const confirmText = action === "revert_pending" 
+        ? "Bạn có chắc muốn hoàn tác bài viết này về trạng thái Chờ Duyệt không?" 
+        : "Bạn có chắc muốn rút lại bài viết này khỏi hàng đợi không?";
+      
+      if (!confirm(confirmText)) return;
+
+      try {
+        const res = await fetch('/api/posts/cancel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            post_id: id,
+            uid: currentUser.uid,
+            role: currentUser.role,
+            action: action
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Lỗi thực hiện");
+
+        if (action === "revert_pending") {
+          showToast("Đã hoàn tác bài viết về trạng thái CHỜ DUYỆT!", "success");
+        } else {
+          showToast("Đã rút lại bài viết khỏi hàng đợi thành công!", "info");
+        }
+
+        loadPosts();
+      } catch (err) {
+        showToast(`Lỗi: ${err.message}`, "error");
+      }
+    }
+
+    // 16. ĐĂNG XUẤT
+    function handleLogout() {
+      currentUser = null;
+      document.getElementById("mainDashboard").classList.add("hidden");
+      document.getElementById("loginScreen").classList.remove("hidden");
+      showToast("Đã đăng xuất khỏi phiên làm việc.", "info");
+    }
+
+    // 17. TOAST THÔNG BÁO
+    function showToast(msg, type) {
+      const t = document.getElementById("toast");
+      t.className = "fixed bottom-6 right-6 px-4 py-3 rounded-2xl border text-xs font-semibold shadow-2xl z-50 transition-all max-w-sm";
+      if (type === "success") {
+        t.className += " bg-white dark:bg-[#181820] border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 shadow-amber-900/10";
+      } else if (type === "error") {
+        t.className += " bg-white dark:bg-[#181820] border-rose-300 dark:border-rose-700 text-rose-800 dark:text-rose-200 shadow-rose-900/10";
+      } else {
+        t.className += " bg-white dark:bg-[#181820] border-stone-300 dark:border-zinc-700 text-stone-800 dark:text-zinc-200 shadow-stone-900/10";
+      }
+      t.textContent = msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 3500);
+    }
+
+    // ==============================================================
+    // 18. PHÒNG THỬ NGHIỆM GỬI TIN NHẮN BOT ZALO (LIVE SANDBOX)
+    // ==============================================================
+    let currentBotProfile = null;
+    let currentTestGroups = [];
+    let currentQRPollingTimer = null;
+    let currentQRCode = null;
+
+    async function loadBotProfile() {
+      const nameEl = document.getElementById("botProfileName");
+      const badgeEl = document.getElementById("botProfileBadge");
+      const uidEl = document.getElementById("botProfileUID");
+      const statusEl = document.getElementById("botProfileStatus");
+      const avatarEl = document.getElementById("botProfileAvatar");
+      const qrContainer = document.getElementById("botQRContainer");
+
+      if (nameEl) nameEl.textContent = "Đang kiểm tra kết nối...";
+      if (badgeEl) {
+        badgeEl.textContent = "CHECKING";
+        badgeEl.className = "text-[9px] font-bold px-1.5 py-0.2 rounded font-mono bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400";
+      }
+
+      try {
+        const res = await fetch('/api/test/bot/info');
+        const data = await res.json();
+        currentBotProfile = data;
+
+        if (data.alive) {
+          const uid = data.user_id || data.uid || '---';
+          const name = data.display_name || data.name || "Zalo Bot (Active)";
+          if (nameEl) nameEl.textContent = name;
+          if (uidEl) uidEl.textContent = `UID: ${uid}`;
+          if (statusEl) statusEl.textContent = "Phiên hoạt động tốt (zpw_sek hợp lệ). Sẵn sàng phát tin.";
+          if (avatarEl && data.avatar) avatarEl.src = data.avatar;
+          if (badgeEl) {
+            badgeEl.textContent = "ONLINE (LIVE)";
+            badgeEl.className = "text-[9px] font-bold px-1.5 py-0.2 rounded font-mono bg-emerald-500/20 text-emerald-500 border border-emerald-500/30";
+          }
+          if (qrContainer) qrContainer.classList.add("hidden");
+        } else {
+          if (nameEl) nameEl.textContent = data.has_cookie ? "Phiên Hết Hạn (Mã 600)" : "Chưa Có Cookie Bot";
+          if (uidEl) uidEl.textContent = `Trạng thái: ${data.message || 'Mất kết nối'}`;
+          if (statusEl) statusEl.textContent = data.zalo_error_code === 600 
+            ? "Khóa zpw_sek đã hết hạn. Đang tải mã QR đăng nhập để tự động lấy Cookie..."
+            : "Chưa cấu hình phiên đăng nhập cho Bot Zalo. Vui lòng quét mã QR bên dưới.";
+          if (badgeEl) {
+            badgeEl.textContent = data.has_cookie ? "EXPIRED (600)" : "NO COOKIE";
+            badgeEl.className = "text-[9px] font-bold px-1.5 py-0.2 rounded font-mono bg-rose-500/20 text-rose-500 border border-rose-500/30";
+          }
+
+          // TỰ ĐỘNG HIỆN MÃ QR LOGIN ĐỂ TỰ LẤY COOKIE MỚI THEO YÊU CẦU CỦA HE
+          if (qrContainer) {
+            qrContainer.classList.remove("hidden");
+            generateQRLogin();
+          }
+        }
+      } catch (err) {
+        if (nameEl) nameEl.textContent = "Lỗi kết nối máy chủ";
+        if (statusEl) statusEl.textContent = err.message;
+      }
+    }
+
+    // 19. SINH VÀ LẮNG NGHE MÃ QR ĐĂNG NHẬP ZALO (TỰ ĐỘNG BẮT COOKIE)
+    async function generateQRLogin() {
+      const qrSpinner = document.getElementById("qrLoadingSpinner");
+      const qrImg = document.getElementById("qrCodeImage");
+      const qrOverlay = document.getElementById("qrOverlayScanned");
+      const qrBadge = document.getElementById("qrLiveBadge");
+      const qrHelp = document.getElementById("qrStatusHelp");
+
+      if (qrSpinner) qrSpinner.classList.remove("hidden");
+      if (qrImg) qrImg.classList.add("hidden");
+      if (qrOverlay) qrOverlay.classList.add("hidden");
+
+      if (qrBadge) {
+        qrBadge.textContent = "WAITING SCAN";
+        qrBadge.className = "text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30";
+      }
+      if (qrHelp) qrHelp.textContent = "Đang kết nối Zalo ID để sinh mã QR đăng nhập...";
+
+      if (currentQRPollingTimer) {
+        clearInterval(currentQRPollingTimer);
+        currentQRPollingTimer = null;
+      }
+
+      try {
+        const res = await fetch('/api/test/bot/qr/generate');
+        const data = await res.json();
+        if (!res.ok || !data.success || !data.image) {
+          throw new Error(data.error || "Không thể sinh mã QR lúc này");
+        }
+
+        currentQRCode = data.code;
+        if (qrSpinner) qrSpinner.classList.add("hidden");
+        if (qrImg) {
+          qrImg.src = data.image;
+          qrImg.classList.remove("hidden");
+        }
+        if (qrHelp) qrHelp.textContent = "Mã QR có hiệu lực trong 100s. Mở Zalo điện thoại để quét.";
+
+        startQRPolling(data.code);
+      } catch (err) {
+        if (qrSpinner) {
+          qrSpinner.innerHTML = `<span class="text-rose-500 text-xs text-center px-2">Lỗi: ${err.message}</span>`;
+        }
+        if (qrHelp) qrHelp.textContent = "Bấm 'Làm mới mã QR' để thử lại.";
+      }
+    }
+
+    function startQRPolling(code) {
+      if (currentQRPollingTimer) clearInterval(currentQRPollingTimer);
+
+      currentQRPollingTimer = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/test/bot/qr/poll?code=${encodeURIComponent(code)}`);
+          const data = await res.json();
+
+          const qrOverlay = document.getElementById("qrOverlayScanned");
+          const qrBadge = document.getElementById("qrLiveBadge");
+          const qrHelp = document.getElementById("qrStatusHelp");
+          const qrScannedName = document.getElementById("qrScannedName");
+          const qrScannedAvatar = document.getElementById("qrScannedAvatar");
+
+          if (data.status === "SCANNED") {
+            if (qrBadge) {
+              qrBadge.textContent = "SCANNED";
+              qrBadge.className = "text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 animate-pulse";
+            }
+            if (qrOverlay) qrOverlay.classList.remove("hidden");
+            if (qrScannedName && data.display_name) qrScannedName.textContent = data.display_name;
+            if (qrScannedAvatar && data.avatar) qrScannedAvatar.src = data.avatar;
+            if (qrHelp) qrHelp.textContent = "Đã quét! Vui lòng bấm 'Xác nhận đăng nhập' trên app Zalo điện thoại...";
+          } else if (data.status === "CONFIRMED") {
+            clearInterval(currentQRPollingTimer);
+            currentQRPollingTimer = null;
+
+            showToast(`Tuyệt vời! Đã đăng nhập và tự động nạp Cookie mới cho Bot: ${data.display_name || 'Zalo Bot'}!`, "success");
+            
+            const qrContainer = document.getElementById("botQRContainer");
+            if (qrContainer) qrContainer.classList.add("hidden");
+
+            // Tự động tải lại hồ sơ bot và danh sách nhóm
+            await loadBotProfile();
+            await loadTestGroups();
+
+          } else if (data.status === "EXPIRED" || data.status === "DECLINED") {
+            clearInterval(currentQRPollingTimer);
+            currentQRPollingTimer = null;
+            if (qrBadge) {
+              qrBadge.textContent = data.status;
+              qrBadge.className = "text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30";
+            }
+            if (qrHelp) qrHelp.textContent = data.status === "DECLINED" ? "Bạn đã từ chối trên điện thoại." : "Mã QR đã hết hạn. Hãy bấm 'Làm mới mã QR'.";
+          }
+        } catch (e) {
+          console.error("Lỗi poll QR:", e);
+        }
+      }, 1500);
+    }
+
+    async function submitNewCookie() {
+      const input = document.getElementById("inputNewCookie");
+      const btn = document.getElementById("btnSaveCookie");
+      if (!input) return;
+      const val = input.value.trim();
+      if (!val) {
+        showToast("Vui lòng dán chuỗi Cookie Zalo vào ô!", "error");
+        return;
+      }
+
+      const originalBtnText = btn.innerHTML;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Đang xác thực Cookie với Zalo...</span>`;
+      btn.disabled = true;
+      lucide.createIcons();
+
+      try {
+        const res = await fetch('/api/test/bot/cookie', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cookie: val })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || data.message || "Lỗi lưu cookie");
+        }
+
+        showToast(`Tuyệt vời! Đã nạp thành công Bot: ${data.bot_name} (UID: ${data.bot_uid})`, "success");
+        input.value = "";
+        await loadBotProfile();
+        await loadTestGroups();
+      } catch (err) {
+        showToast(`Lỗi Cookie: ${err.message}`, "error");
+      } finally {
+        btn.innerHTML = originalBtnText;
+        btn.disabled = false;
+        lucide.createIcons();
+      }
+    }
+
+    // 20. QUẢN LÝ DROPBOX NHÓM ĐÍCH & DANH SÁCH NHÓM
+    function handleTargetGroupDropdownChange(val) {
+      const targetInput = document.getElementById("targetTestGroupId");
+      const nameHint = document.getElementById("currentSelectedGroupHint");
+      const idHint = document.getElementById("currentSelectedGroupIdHint");
+      const safeBadge = document.getElementById("badgeTargetSafe");
+
+      if (targetInput) targetInput.value = val;
+      if (idHint) idHint.textContent = `ID: ${val}`;
+
+      const group = currentTestGroups.find(g => g.id === val);
+      if (group) {
+        if (nameHint) nameHint.textContent = group.name;
+        if (safeBadge) {
+          if (group.is_test) {
+            safeBadge.textContent = "AN TOÀN";
+            safeBadge.className = "text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800";
+          } else {
+            safeBadge.textContent = "NHÓM THẬT";
+            safeBadge.className = "text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800";
+          }
+        }
+      } else {
+        if (nameHint) nameHint.textContent = `Nhóm ID ${val}`;
+      }
+    }
+
+    async function loadTestGroups(refresh = false) {
+      const select = document.getElementById("targetTestGroupSelect");
+      const btnRefresh = document.getElementById("btnRefreshGroups");
+      if (btnRefresh && refresh) {
+        btnRefresh.classList.add("animate-spin");
+      }
+
+      try {
+        const url = refresh ? '/api/test/groups?refresh=true' : '/api/test/groups';
+        const res = await fetch(url);
+        const data = await res.json();
+        currentTestGroups = Array.isArray(data) ? data : (data.groups || []);
+
+        const qrBanner = document.getElementById("cookieExpiredWarningBanner");
+        if (qrBanner) {
+          if (data.has_cookie && !data.cookie_alive) {
+            qrBanner.classList.remove("hidden");
+          } else {
+            qrBanner.classList.add("hidden");
+          }
+        }
+
+        if (currentTestGroups.length === 0) {
+          currentTestGroups = [
+            { id: "4025169182418597977", name: "Ban Công Nghệ • School Life Stories (Nhóm Thật BCN)", is_test: true, source: "official", badge: "NHÓM THẬT", mem_count: 34 }
+          ];
+        }
+
+        let currentSelectedId = document.getElementById("targetTestGroupId")?.value;
+        if (!currentSelectedId || !currentTestGroups.some(g => g.id === currentSelectedId)) {
+          currentSelectedId = currentTestGroups[0].id;
+        }
+        if (document.getElementById("targetTestGroupId")) {
+          document.getElementById("targetTestGroupId").value = currentSelectedId;
+        }
+
+        // Cập nhật Dropbox chọn nhóm
+        if (select) {
+          select.innerHTML = currentTestGroups.map(g => {
+            const badgeText = g.badge || (g.is_test ? 'AN TOÀN' : 'ZALO THẬT');
+            const memHint = g.mem_count ? ` (${g.mem_count} TV)` : '';
+            return `<option value="${g.id}" ${g.id === currentSelectedId ? 'selected' : ''}>[${badgeText}] ${g.name}${memHint} - [ID: ${g.id}]</option>`;
+          }).join('');
+        }
+
+        // Cập nhật hint
+        handleTargetGroupDropdownChange(currentSelectedId);
+        if (refresh) showToast(`Đã đồng bộ ${currentTestGroups.length} nhóm thật từ Zalo!`, "success");
+      } catch (err) {
+        console.error("Lỗi nạp danh sách nhóm:", err);
+      } finally {
+        if (btnRefresh) btnRefresh.classList.remove("animate-spin");
+      }
+    }
+
+    function setTestMessageTemplate(tpl) {
+      const msgInput = document.getElementById("testMessageText");
+      const now = new Date();
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+      const dateStr = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+
+      if (tpl === 'ping') {
+        msgInput.value = `[Test Bot BCN] Ping kiểm tra đường truyền và phản hồi Zalo. Thời gian máy khách: ${timeStr} ngày ${dateStr}.`;
+      } else if (tpl === 'tagall') {
+        msgInput.value = `[Test Bot BCN] Réo chuông toàn bộ thành viên nhóm để kiểm nghiệm payload mentions [@all] trực tiếp qua API Zalo.`;
+        const cb = document.getElementById("testTagAll");
+        if (cb) cb.checked = true;
+      } else if (tpl === 'report') {
+        msgInput.value = `[Báo Cáo BCN] Thông báo tiến độ: Module dispatch tin nhắn Zalo đã hoạt động. Trạng thái hệ thống: Sẵn sàng phát sóng.`;
+      }
+    }
+
+    async function executeLiveSend() {
+      const select = document.getElementById("targetTestGroupSelect");
+      const targetId = (select && select.value) ? select.value.trim() : (document.getElementById("targetTestGroupId")?.value.trim() || "");
+      const message = document.getElementById("testMessageText")?.value.trim();
+      const tagAll = document.getElementById("testTagAll")?.checked || false;
+
+      const btn = document.getElementById("btnExecuteSend");
+      const btnText = document.getElementById("btnExecuteSendText");
+      const statusBox = document.getElementById("consoleStatusBox");
+      const statusText = document.getElementById("consoleStatusText");
+      const rawJsonEl = document.getElementById("consoleRawJson");
+      const httpStatusEl = document.getElementById("consoleHttpStatus");
+      const latencyEl = document.getElementById("consoleLatency");
+
+      if (!targetId) {
+        showToast("Vui lòng nhập hoặc chọn Group ID!", "error");
+        return;
+      }
+      if (!message) {
+        showToast("Vui lòng nhập nội dung tin nhắn cần test!", "error");
+        return;
+      }
+
+      btn.disabled = true;
+      btnText.textContent = "ĐANG PHÁT TỚI MÁY CHỦ ZALO...";
+      if (statusBox) {
+        statusBox.className = "p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-xs text-indigo-700 dark:text-indigo-300 flex items-start gap-3";
+        statusText.innerHTML = `Đang khởi tạo kết nối HTTP POST tới máy chủ Zalo (Nhóm ID: <b>${targetId}</b>)...`;
+      }
+
+      try {
+        const res = await fetch('/api/test/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            group_id: targetId,
+            message: message,
+            tag_all: tagAll
+          })
+        });
+
+        const data = await res.json();
+
+        if (httpStatusEl) {
+          httpStatusEl.textContent = `HTTP ${data.http_status || res.status}`;
+          httpStatusEl.className = data.success 
+            ? "px-2 py-0.5 rounded font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+            : "px-2 py-0.5 rounded font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30";
+        }
+
+        if (latencyEl) {
+          latencyEl.textContent = `${data.latency_ms || 0} ms`;
+        }
+
+        if (rawJsonEl) {
+          rawJsonEl.textContent = JSON.stringify(data, null, 2);
+        }
+
+        if (statusBox && statusText) {
+          if (data.success) {
+            statusBox.className = "p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-800 dark:text-emerald-300 flex items-start gap-3";
+            statusText.innerHTML = `<b>THÀNH CÔNG:</b> ${data.explanation || 'Tin nhắn đã xuất hiện trên Zalo!'}`;
+            showToast("Bắn tin nhắn Zalo THÀNH CÔNG!", "success");
+          } else {
+            statusBox.className = "p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-800 dark:text-rose-300 flex items-start gap-3";
+            statusText.innerHTML = `<b>CHƯA THÀNH CÔNG:</b> ${data.explanation || data.error || 'Vui lòng kiểm tra lại Cookie'}`;
+            showToast(data.explanation || "Gửi tin chưa thành công", "error");
+          }
+        }
+
+      } catch (err) {
+        if (rawJsonEl) rawJsonEl.textContent = JSON.stringify({ error: err.message }, null, 2);
+        if (statusBox && statusText) {
+          statusBox.className = "p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-800 dark:text-rose-300 flex items-start gap-3";
+          statusText.innerHTML = `Lỗi mạng hoặc kết nối máy chủ: ${err.message}`;
+        }
+        showToast(`Lỗi: ${err.message}`, "error");
+      } finally {
+        btn.disabled = false;
+        btnText.textContent = "BẮN TIN NHẮN THẬT NGAY (LIVE DISPATCH)";
+      }
+    }
+
+    // 21. QUẢN LÝ MODAL THÀNH VIÊN NHÓM ZALO THẬT
+    let currentGroupMembersData = [];
+    let currentMemberRoleFilter = 'all';
+    let currentMemberSearchQuery = '';
+    let currentInspectingGroupId = '';
+    let currentInspectingGroupName = '';
+
+    function inspectCurrentGroupMembers() {
+      const select = document.getElementById("targetTestGroupSelect");
+      const id = (select && select.value) ? select.value.trim() : (document.getElementById("targetTestGroupId")?.value || "");
+      const name = document.getElementById("currentSelectedGroupHint")?.textContent || "Nhóm Zalo";
+      openGroupMembersModal(id, name);
+    }
+
+    function openGroupMembersModal(id, name, event) {
+      if (event) event.stopPropagation();
+      currentInspectingGroupId = id;
+      currentInspectingGroupName = name;
+
+      const modal = document.getElementById("groupMembersModal");
+      const title = document.getElementById("modalGroupName");
+      const idEl = document.getElementById("modalGroupId");
+      const badge = document.getElementById("modalGroupBadge");
+
+      if (title) title.textContent = name;
+      if (idEl) idEl.textContent = `ID: ${id}`;
+      if (modal) modal.classList.remove("hidden");
+
+      const grp = currentTestGroups.find(g => g.id === id);
+      if (badge && grp) {
+        badge.textContent = grp.badge || (grp.is_test ? 'AN TOÀN' : 'ZALO THẬT');
+      }
+
+      fetchAndRenderGroupMembers(id);
+    }
+
+    function closeGroupMembersModal() {
+      const modal = document.getElementById("groupMembersModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    async function fetchAndRenderGroupMembers(id) {
+      const listEl = document.getElementById("modalMemberList");
+      const countEl = document.getElementById("modalMemberCount");
+      const sourceHint = document.getElementById("modalSourceHint");
+
+      if (listEl) {
+        listEl.innerHTML = `
+          <div class="p-8 text-center text-stone-500 dark:text-zinc-400 text-xs flex flex-col items-center justify-center gap-3">
+            <i data-lucide="loader-2" class="w-6 h-6 animate-spin text-indigo-500"></i>
+            <span>Đang giải mã và tải toàn bộ danh bạ thành viên nhóm từ Zalo API...</span>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      try {
+        const res = await fetch(`/api/test/groups/members?id=${encodeURIComponent(id)}`);
+        const data = await res.json();
+
+        currentGroupMembersData = data.members || [];
+        if (countEl) countEl.textContent = `${data.total || currentGroupMembersData.length} thành viên`;
+
+        if (sourceHint) {
+          if (data.source === 'zalo_live') {
+            sourceHint.innerHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500"></i><span>Nguồn: Zalo Live API (Thời gian thực)</span>`;
+          } else {
+            sourceHint.innerHTML = `<i data-lucide="database" class="w-3.5 h-3.5 text-amber-500"></i><span>Nguồn: Cache danh bạ BCN (Cần Quét QR để đồng bộ trực tiếp)</span>`;
+          }
+        }
+
+        renderFilteredMembers();
+      } catch (err) {
+        if (listEl) {
+          listEl.innerHTML = `
+            <div class="p-6 text-center text-rose-500 text-xs space-y-2">
+              <i data-lucide="alert-circle" class="w-6 h-6 mx-auto"></i>
+              <div>Không thể tải danh sách thành viên: ${err.message}</div>
+            </div>
+          `;
+          lucide.createIcons();
+        }
+      }
+    }
+
+    function renderFilteredMembers() {
+      const listEl = document.getElementById("modalMemberList");
+      if (!listEl) return;
+
+      let filtered = currentGroupMembersData.filter(m => {
+        const matchesQuery = !currentMemberSearchQuery || 
+          (m.name && m.name.toLowerCase().includes(currentMemberSearchQuery)) || 
+          (m.uid && m.uid.includes(currentMemberSearchQuery));
+
+        if (!matchesQuery) return false;
+
+        if (currentMemberRoleFilter === 'admin') {
+          return m.is_admin || m.is_creator;
+        } else if (currentMemberRoleFilter === 'member') {
+          return !m.is_admin && !m.is_creator;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `
+          <div class="p-8 text-center text-stone-400 dark:text-zinc-500 text-xs">
+            Không tìm thấy thành viên nào khớp với tìm kiếm.
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(m => {
+        let roleBadge = '<span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-stone-100 dark:bg-white/10 text-stone-500 dark:text-zinc-400">Thành viên</span>';
+        if (m.is_creator) {
+          roleBadge = '<span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-500 border border-amber-500/30">👑 Trưởng Nhóm</span>';
+        } else if (m.is_admin) {
+          roleBadge = '<span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">🛡️ Phó Nhóm</span>';
+        }
+
+        const avatarSrc = m.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || 'Z')}&background=6366f1&color=fff`;
+
+        return `
+          <div class="p-2.5 sm:p-3 rounded-2xl bg-stone-50 dark:bg-[#181820] border border-stone-200/80 dark:border-white/10 flex items-center justify-between gap-3 hover:border-indigo-400/50 transition">
+            <div class="flex items-center gap-3 min-w-0 flex-1">
+              <img src="${avatarSrc}" alt="${m.name}" class="w-9 h-9 rounded-full object-cover border border-stone-200 dark:border-white/10 shrink-0" onerror="this.src='https://ui-avatars.com/api/?name=Z&background=4f46e5&color=fff'">
+              <div class="space-y-0.5 min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-xs font-bold text-stone-900 dark:text-white truncate">${m.name}</span>
+                  ${roleBadge}
+                </div>
+                <div class="text-[10px] font-mono text-stone-500 dark:text-zinc-400 flex items-center gap-1.5">
+                  <span>UID: ${m.uid}</span>
+                  <button type="button" onclick="copyMemberUid('${m.uid}')" class="text-stone-400 hover:text-indigo-500 transition cursor-pointer" title="Copy UID">
+                    <i data-lucide="copy" class="w-3 h-3"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button type="button" onclick="tagMemberInTest('${m.uid}', '${m.name.replace(/'/g, "\\'")}')" 
+                class="px-2.5 py-1 rounded-xl text-xs font-bold bg-indigo-500/10 hover:bg-indigo-600 hover:text-white text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 transition cursor-pointer flex items-center gap-1">
+                <i data-lucide="at-sign" class="w-3 h-3"></i>
+                <span class="hidden sm:inline">Tag</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function filterGroupMembers(query) {
+      currentMemberSearchQuery = (query || '').toLowerCase().trim();
+      renderFilteredMembers();
+    }
+
+    function setMemberRoleFilter(role) {
+      currentMemberRoleFilter = role;
+      const btnAll = document.getElementById("filterAll");
+      const btnAdmin = document.getElementById("filterAdmin");
+      const btnMembers = document.getElementById("filterMembers");
+
+      const activeClass = "px-2.5 py-1 rounded-lg font-bold bg-indigo-500 text-white transition";
+      const inactiveClass = "px-2.5 py-1 rounded-lg font-medium text-stone-600 dark:text-zinc-300 hover:bg-stone-200 dark:hover:bg-white/10 transition";
+
+      if (btnAll) btnAll.className = role === 'all' ? activeClass : inactiveClass;
+      if (btnAdmin) btnAdmin.className = role === 'admin' ? activeClass : inactiveClass;
+      if (btnMembers) btnMembers.className = role === 'member' ? activeClass : inactiveClass;
+
+      renderFilteredMembers();
+    }
+
+    function copyMemberUid(uid) {
+      navigator.clipboard.writeText(uid);
+      showToast(`Đã copy Zalo UID: ${uid}`, "info");
+    }
+
+    function tagMemberInTest(uid, name) {
+      const msgInput = document.getElementById("testMessageText");
+      if (msgInput) {
+        msgInput.value = (msgInput.value.trim() ? msgInput.value.trim() + " " : "") + `@${name} `;
+      }
+      closeGroupMembersModal();
+      showToast(`Đã chèn tag @${name} vào khung soạn thảo!`, "success");
+    }
+
+    function refreshCurrentGroupMembers() {
+      if (currentInspectingGroupId) {
+        fetchAndRenderGroupMembers(currentInspectingGroupId);
+      }
+    }
+
+    function scrollToQRLogin() {
+      const qrContainer = document.getElementById("botQRContainer");
+      if (qrContainer) {
+        qrContainer.classList.remove("hidden");
+        qrContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      generateQRLogin();
+    }
+
+    function copyRawConsole() {
+      const el = document.getElementById("consoleRawJson");
+      if (!el) return;
+      navigator.clipboard.writeText(el.textContent);
+      showToast("Đã copy toàn bộ phản hồi JSON vào Clipboard!", "info");
+    }
+
+    // KHỞI ĐỘNG HỆ THỐNG
+    initTheme();
+    startHeaderClock();
+    checkZaloOAuthCallback();
+    lucide.createIcons();
+    window.addEventListener("resize", () => {
+      let activeBtn = document.getElementById("navTabCompose");
+      if (currentMainSection === 'queue') activeBtn = document.getElementById("navTabQueue");
+      else if (currentMainSection === 'test') activeBtn = document.getElementById("navTabTest");
+      updateSlidingIndicator(activeBtn);
+    });
+  </script>
+
+  <!-- MODAL CHI TIẾT THÀNH VIÊN NHÓM ZALO THẬT -->
+  <div id="groupMembersModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-[#141419] w-full max-w-xl rounded-3xl border border-stone-200 dark:border-white/10 shadow-2xl flex flex-col max-h-[85vh] overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <!-- Header -->
+      <div class="p-4 sm:p-5 border-b border-stone-100 dark:border-white/10 flex items-center justify-between">
+        <div class="space-y-0.5 min-w-0 pr-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="text-sm font-bold text-stone-900 dark:text-white truncate" id="modalGroupName">Ban Công Nghệ</h3>
+            <span id="modalGroupBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">ZALO THẬT</span>
+          </div>
+          <div class="text-[11px] font-mono text-stone-500 dark:text-zinc-400 flex items-center gap-2">
+            <span id="modalGroupId">ID: ...</span>
+            <span>•</span>
+            <span id="modalMemberCount" class="text-indigo-600 dark:text-indigo-400 font-bold">... thành viên</span>
+          </div>
+        </div>
+        <button onclick="closeGroupMembersModal()" class="p-2 rounded-xl text-stone-400 hover:text-stone-700 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-white/5 transition cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Filter & Search Toolbar -->
+      <div class="p-3 sm:px-5 bg-stone-50 dark:bg-white/5 border-b border-stone-100 dark:border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 justify-between">
+        <div class="relative flex-1">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="memberSearchInput" oninput="filterGroupMembers(this.value)" placeholder="Tìm theo tên hoặc Zalo UID..." class="w-full text-xs pl-8 pr-3 py-1.5 rounded-xl bg-white dark:bg-[#181820] border border-stone-200 dark:border-white/10 text-stone-900 dark:text-white focus:outline-none focus:border-indigo-500">
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0 text-[11px]">
+          <button id="filterAll" onclick="setMemberRoleFilter('all')" class="px-2.5 py-1 rounded-lg font-bold bg-indigo-500 text-white transition">Tất cả</button>
+          <button id="filterAdmin" onclick="setMemberRoleFilter('admin')" class="px-2.5 py-1 rounded-lg font-medium text-stone-600 dark:text-zinc-300 hover:bg-stone-200 dark:hover:bg-white/10 transition">Quản trị</button>
+          <button id="filterMembers" onclick="setMemberRoleFilter('member')" class="px-2.5 py-1 rounded-lg font-medium text-stone-600 dark:text-zinc-300 hover:bg-stone-200 dark:hover:bg-white/10 transition">Thành viên</button>
+        </div>
+      </div>
+
+      <!-- Member List -->
+      <div id="modalMemberList" class="p-4 sm:p-5 overflow-y-auto space-y-2.5 flex-1 custom-scrollbar">
+        <!-- Dynamic list -->
+      </div>
+
+      <!-- Footer -->
+      <div class="p-3 sm:px-5 bg-stone-50 dark:bg-white/5 border-t border-stone-100 dark:border-white/10 flex items-center justify-between text-[11px] text-stone-500 dark:text-zinc-400">
+        <div class="flex items-center gap-1.5" id="modalSourceHint">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500"></i>
+          <span>Nguồn: Zalo Live API</span>
+        </div>
+        <button onclick="refreshCurrentGroupMembers()" class="text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1 font-semibold cursor-pointer">
+          <i data-lucide="refresh-cw" class="w-3 h-3"></i> Làm mới danh bạ
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
